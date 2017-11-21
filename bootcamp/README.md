@@ -129,7 +129,7 @@ Developers only need to care about implementing the desired application logic - 
 # 環境の準備
 
 はじめる前に:
-* 作業を進めていくうちに、CLIがこのガイドとは異なるレスポンスを示すかもしれません。これはあなたがこの文書が作成された際とは異なるnamespaceを利用していることに起因するものです。これに伴う差異は極めて小さく、nameの関わる箇所でのみ起きる事象となります。
+* 作業を進めていくうちに、CLIがこのガイドとは異なる結果を示すかもしれません。これはあなたがこの文書が作成された際とは異なるnamespaceを利用していることに起因するものです。これに伴う差異は極めて小さく、nameの関わる箇所でのみ起きる事象となります。
 * 【重要】*Linux* ユーザーの方へ:`cURL`などいくつかのツールを追加でインストールする必要があります。(e.g. *Ubuntu* の場合以下のコマンドでインストールできます。`sudo apt-get update && sudo apt-get install curl`)
 * 【重要】*Windows* ユーザーの方へ: *Git* (https://git-for-windows.github.io/)をダウンロードし *Git bash* から作業を行うことを推奨しています。また`cURL` for Windows (https://curl.haxx.se/download.html)のダウンロードも推奨しています。
 
@@ -137,25 +137,25 @@ IBM Cloud Functionsの利用のはじめの一歩:
 1. ブラウザウィンドウを開きます。
 2. https://console.ng.bluemix.net/openwhisk/ にアクセスします。
 3. IBM Cloudにログインします。  
-   アカウントを持っていない場合は`「フリーアカウントの作成」`をクリックするか,
+   アカウントを持っていない場合は`「フリーアカウントの作成」`をクリックするか、
    https://console.ng.bluemix.net/registration/ に直接アクセスしてアカウントを作成します。
-4. `アメリカ南部`または`英国`のどちらかのリージョンを選択します。(自国に近い地域を選択すると良いでしょう。) `アメリカ南部`を選択しなかった場合、今後出てくる`URL`内の`.ng`フラグメントを他のものに変える必要があります。`英国`の場合は`.eu-gb`となります。Make sure to pick one of the following regions (pick the one closer to where you are): `US South` or `United Kingdom`
+4. `アメリカ南部`または`英国`のどちらかのリージョンを選択します。(自国に近い地域を選択すると良いでしょう。) `アメリカ南部`を選択しなかった場合、今後出てくる`URL`内の`.ng`フラグメントを他のものに変える必要があります。`英国`の場合は`.eu-gb`となります。
 5. `「CLIのダウンロード」`をクリックします。
 6. 手順の1から3に従って作業します。(4は必須ではありません) ここには、CLIのダウンロード、Cloud Functionsプラグインをインストール、 APIのエンドポイント・組織・namespaceを選択してBluemixにログインするという作業が含まれます。
 
-# Start your engines!
+# サーバーレスをはじめよう!
 
-The CLI allows you to work with OpenWhisk's basic entities, i.e. to create *actions, triggers, rules, and sequences*. Hence, let's learn how to work with the CLI.
+ダウンロードしたCLIは、*アクション・トリガー・ルール・シークエンス* の作成といったIBM Cloud Functionsの基本操作に対応します。それではどのようにCLIを操作すればよいかを学習しましょう。
 
-## Actions
+## アクション
 
-*Actions* are small stateless pieces of code that run on the OpenWhisk platform.
+*アクション* はIBM Cloud Functions上で機能する、短いコードのまとまりです。
 
-### Creating and invoking JavaScript actions
+### JavaScriptのアクションの作成と実行
 
-An action can be a simple *JavaScript* function that accepts and returns a *JSON* object.
+このアクションは簡単な *JavaScript* で構成され、*JSON* を読み込み、返します。
 
-First, use your editor of choice (for instance, download the *Atom* editor from https://atom.io/) to create a file called `hello.js` with the following content:
+まず、任意のエディターを開き(例： *Atom* エディター https://atom.io/)、`hello.js`というファイルを作成して以下のコードを入力します。
 
 ```javascript
 function main() {
@@ -163,16 +163,16 @@ function main() {
 }
 ```
 
-Save the file to wherever you want.
+ファイルは任意のタイミングでいつでも保存してかまいません。
 
-Next, open a terminal window, navigate to the directory where you stored the file `hello.js` and create an OpenWhisk action called `hello` referencing the function in `hello.js`:
+次に、ターミナルウィンドウを開き、`hello.js`を保存したディレクトリに移動します。以下のコマンドを入力して、`hello.js`の関数を反映した`hello`というアクションを実行しましょう。
 
 <pre>
 $ bx wsk action create hello hello.js
 <b>ok:</b> created action <b>hello</b>
 </pre>
 
-Notice that you can always list the actions you have already created like this:
+作成したアクションはいつでも以下の方法でリスト化して表示できます。
 
 <pre>
 $ bx wsk action list
@@ -180,6 +180,7 @@ $ bx wsk action list
 hello                                  private nodejs:6
 </pre>
 
+アクションを実行するには```bx wsk action invoke```コマンドを使います。 *ブロッキング* (i.e.*同期*) の実行はアクションが完遂され結果を返されるまで待機されます。その設定には```-blocking```オプション(または```-b```)を利用します。
 To run an action use the ```bx wsk action invoke``` command.
 A *blocking* (i.e. *synchronous*) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
 
@@ -197,11 +198,11 @@ $ bx wsk action invoke --blocking hello
 [...]
 </pre>
 
-The above command outputs two important pieces of information:
-*	the ```activation id``` (```dde9212e686f413bb90f22e79e12df74```)
-*	the ```activation response``` which includes the result
+上記のコマンドによるアウトプットには2つの重要な情報が含まれています。
+*	```activation id``` (```dde9212e686f413bb90f22e79e12df74```)
+*	```activation response``` (及びその出力結果)
 
-The ```activation id``` can be used to retrieve the logs or the result of an (asynchronous) invocation at a future point in time. In case you forgot to note down an `activation id` you can retrieve the list of activations at any time:
+この```activation id``` は将来のとある時点での(非同期) invokeのログや結果を取り出す際に利用します。もし```activation id```を書置きしておくことを失念しても、いつでも実行結果のリストを表示することができます。
 
 <pre>
 $ bx wsk activation list
@@ -210,9 +211,9 @@ dde9212e686f413bb90f22e79e12df74             hello
 eee9212e686f413bb90f22e79e12df74             hello
 </pre>
 
-Notice that the list of ```activation ids``` is ordered with the most recent one first.
+最新の```activation id```が最上列に来るようになっています。
 
-To obtain the result of a particular action invocation enter (notice that you need to replace the ```activation id``` shown below with the ```id``` you have received during the previous step):
+特定のアクションの実行結果を確認するには(以下のコマンド上の```activation id```を各々の```id```に書き換える必要があります。):
 
 <pre>
 $ bx wsk activation get dde9212e686f413bb90f22e79e12df74
@@ -229,14 +230,14 @@ $ bx wsk activation get dde9212e686f413bb90f22e79e12df74
 [...]
 </pre>
 
-You can delete an action like this:
+アクションを削除するには:
 
 <pre>
 $ bx wsk action delete hello
 <b>ok:</b> deleted action <b>hello</b>
 </pre>
 
-You can check whether an action was successfully deleted like this:
+アクションの削除が成功したかを確認するには:
 
 <pre>
 $ bx wsk list
@@ -247,11 +248,11 @@ entities in namespace: <b>default</b>
 <b>rules</b>
 </pre>
 
-### Creating and invoking asynchronous actions
+### 非同期型のアクションを作成・実行する
 
-*JavaScript* functions that run *asynchronously* need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
+*非同期* で実行される *JavaScript* 関数は`main`関数が返されたあとにアクティベーションを返す必要があります。これは`Promise`を返すことで遂行することができます。
 
-Again, use your editor of choice to create a file called `asyncAction.js` with the following content:
+それでは`asyncAction.js`というファイルを作成し、下のコマンドを入力しましょう。
 
 ```javascript
 function main(params) {
@@ -263,15 +264,15 @@ function main(params) {
 }
 ```
 
-Notice that the `main` function returns a `Promise` which indicates that the activation has not completed yet, but is expected to in the future.
+`main`関数はアクティベーションがまだ完遂していないことを示す`Promise`を返します。
 
-In this particular example the `setTimeout` function waits for two seconds before calling the callback function. This represents the asynchronous code and goes inside the `Promise's` callback function.
+上記の例における`setTimeout`関数はコールバック関数をコールする前に2秒待機します。これは非同期コードであることを示し、`Promise`のコールバック関数に引き渡します。
 
-The `Promise's` callback takes two arguments, `resolve` and `reject`, which are both functions. The call to `resolve` fulfills the `Promise` and indicates that the activation has completed normally.
+`Promise`のコールバックは`resolve`と`reject`の２つの関数を実引数に持ちます。`resolve`のコールは`Promise`を履行し、アクティベーションが通常通り完遂したことを示します。
 
-A call to `reject` can be used to reject the `Promise` and signal that the activation has completed abnormally.
+`reject`のコールは`Promise`を却下するために用いられるものでアクティベーションが異常終了したことを示します。
 
-Next, run the following commands to create the action and invoke it:
+次に以下のコマンドを実行し、アクションを作成・実行します。:
 
 <pre>
 $ bx wsk action create asyncAction asyncAction.js
@@ -283,7 +284,7 @@ $ bx wsk action invoke --blocking --result asyncAction
 }
 </pre>
 
-Finally, run the following commands to fetch the activation log to see how long the activation took to complete:
+最後に以下のコマンドを実行し、アクティベーションログをフェッチしてアクティベーションが完遂するまでどのくらいかかるのかを確認してください。
 
 <pre>
 $ bx wsk activation list --limit 1 asyncAction
@@ -299,13 +300,13 @@ $ bx wsk activation get b066ca51e68c4d3382df2d8033265db0
 }
 </pre>
 
-By looking at the `duration` entry being shown as part of the activation record, you can see that this activation took slightly over two seconds to complete.
+アクティベーションレコードとして表示されている`duration`エントリーを見れば、アクティベーションは2秒をわずかに上回っていることがわかります。
 
-### Passing parameters to actions
+### アクションにパラメータを引き渡す
 
-Actions may be invoked with several named parameters.
+アクションはいくつかの名前つきのパラメータを伴って実行されるでしょう。
 
-Change (and save) your `hello` action as follows:
+以下を実行し`hello`アクションを変更(及び保存)してください。
 
 ```javascript
 function main(params) {
@@ -313,14 +314,14 @@ function main(params) {
 }
 ```
 
-Again, create the action:
+もう一度アクションを作成します。
 
 <pre>
 $ bx wsk action create hello hello.js
 <b>ok:</b> created action <b>hello</b>
 </pre>
 
-You can pass named parameters as *JSON* payload or via the CLI:
+*JSON* ペイロードとしてあるいはCLIを通して、名前付のパラメータを引き渡すことができます。
 
 <pre>
 $ bx wsk action invoke -b hello -p name "Bernie" -p place "Vermont" --result
@@ -329,13 +330,13 @@ $ bx wsk action invoke -b hello -p name "Bernie" -p place "Vermont" --result
 }
 </pre>
 
-Notice the use of the `--result` parameter (or `-r` for short; available for blocking invocations only) to immediately print the result of the action invocation without the need of an `activation id`.
+`--result` パラメータ (または`-r`(invocateのブロッキングの際のみ利用可能) )は`activation id`を用いずにすばやく結果を表示した際に使います。
 
-### Setting default parameters
+### デフォルトのパラメータを設定する
 
-Recall that the `hello` action above took two parameters: the `name` of a person, and the `place` where he or she is from.
+再度前述の`hello`アクションを、`name`(名前)と`place`(出身地)の2つのパラメータを伴った上でコールします。
 
-Rather than passing all the parameters to an action every time, you can *bind* certain parameters. Let's bind the `place` parameter above so we have an action that defaults to the place `Vermont, CT`:
+毎回すべてのパラメータをアクションに引き渡すのではなく、特定のパラメータのみを *バインド* することができます。`place`パラメータをバインドし、`Vermont, CT`をplaceのデフォルト値としてみましょう。
 
 <pre>
 $ bx wsk action create helloBindParams hello.js --param place "Vermont, CT"
@@ -347,15 +348,15 @@ $ bx wsk action invoke -b helloBindParams --param name "Bernie" --result
 }
 </pre>
 
-Notice that we did not need to specify the `place` parameter anymore when invoking the action. Moreover, bound parameters can still be overwritten by specifying the parameter value at invocation time.
+アクションを実行すれば今後は`place`パラメータを指定する必要がなくなります。さらに、バインドされたパラメータはアクション実行時に別のパラメータを指定することで上書きされます。
 
-### Using actions to call an external API
+### 外部APIの呼び出しにアクションを用いる
 
-So far, the examples have been self-contained functions. You can also create an action that calls an external API, of course.
+これまでにご紹介した例はそれだけですべてが充足した関数でした。もちろんそのような形式に限らず、外部APIを呼び出す形のアクションも作成することができます。
 
-The following example invokes the *Yahoo Weather service* to get the current conditions at a specific location.
+次の例では *Yahoo Weather Service* をinvokeし、特定の地域の気象情報を入手しています。
 
-Again, use your editor of choice to create a file called `weather.js` with the following content:
+`weather.js`というファイルを作成し、以下を入力してください。
 
 ```javascript
 var request = require("request");
@@ -382,11 +383,11 @@ function main(params) {
 }
 ```
 
-Notice that the action above uses the *JavaScript request library* to make an *HTTP* request to the *Yahoo Weather API* and to extract certain fields from the *JSON* result.
+上記のアクションは *Yahoo Weather API* への *HTTP* リクエストの送信と *JSON* Resultから特定のフィールドを引き出すことを目的として *JavaScript request library* を利用しています。
 
-The example also shows the need for asynchronous actions. The action returns a `Promise` to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the *HTTP* call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
+例では、非同期アクションが必要であることも示されています。アクションは`Promise`を返しており、関数が返ってきた時点ではまだアクションの結果が取得できていないことを示しています。しかし、*HTTP* のコールが完遂した時点でのコールバックでは結果の取得は済んでおり、`resolve`関数への引数として前述したように引き渡されています。
 
-Now, run the following commands to create the action and invoke it:
+それでは、以下のコマンドを実行してアクションを作成し実行しましょう。
 
 <pre>
 $ bx wsk action create yahooWeather weather.js
@@ -398,12 +399,12 @@ $ bx wsk action invoke --blocking --result yahooWeather --param location "Brookl
 }
 </pre>
 
-### Working with packages and sequencing actions
+### パッケージを用いて複数のアクションを連続実行する
 
-You can also create an action that chains together a *sequence* of actions.
-We will demonstrate how to use such sequences using actions shipped with *packages* available out of the box.
+複数のアクションをひとつなぎの *シーケンス* として実行することができます。
+*パッケージ* を用いたアクションを通して、そのようなシーケンスをどのようにして使えばいいのかをお見せしましょう。
 
-Generally, to reveal which packages are available out of the box run the following command:
+通常、どのパッケージを用いることが可能かを知るには以下のコマンドを利用します。
 
 <pre>
 $ bx wsk package list /whisk.system
@@ -421,7 +422,7 @@ $ bx wsk package list /whisk.system
 /whisk.system/pushnotifications        shared
 </pre>
 
-Next, to reveal the list of entities contained in the `/whisk.system/cloudant` package run the following command:
+次に、`/whisk.system/cloudant`パッケージに内蔵されているエンティティの一覧を表示するには以下のコマンドを利用します。
 
 <pre>
 $ bx wsk package get --summary /whisk.system/cloudant
@@ -433,29 +434,29 @@ $ bx wsk package get --summary /whisk.system/cloudant
 [...]
 </pre>
 
-The output shows that the `/whisk.system/cloudant` package provides multiple actions, e.g. `read` and `write`, and a trigger *feed* called `changes`. The `changes` feed causes triggers to be fired when documents are added to the specified *Cloudant* database.
+出力結果は`/whisk.system/cloudant`が、`read`や`write`そしてトリガーである`changes`という *フィード* といった複数のアクションを実行していることがわかります。`changes`フィードは *Cloudant* データベースにドキュメントが追加された際にトリガーを起動します。
 
-The package also defines the parameters `username`, `password`, `host`, and `port`. These parameters must be specified for the actions and feeds to be meaningful. The parameters allow the actions to operate on a specific *Cloudant* account.
+またパッケージは`username`、`password`、`host`、`port`といったパラメータも定義します。これらのアクションやフィードに対するパラメータは値を持っている必要があります。パラメータは *Cloudant* アカウントの管理のためのアクションを許可します。
 
-One way to access the actions in this package is by binding to them (you could alternatively access the package directly, of course). Bindings create a reference to the given package in your namespace. The advantage is that they allow you to access actions by typing `myUtil/actionName` instead of `/whisk.system/utils/actionName` every time.
+このパッケージへのアクションにアクセスする1つの方法はバインドです(パッケージに直接アクセスすることも可能です)。バインドすると、namespace内のパッケージにリファレンスを作成できます。そのメリットは`/whisk.system/utils/actionName`の代わりとして、`myUtil/actionName`とアクセスするたびに記載されるようになることです。
 
-Now, let's use a set of actions that are shipped with the package `/whisk.system/utils`.
+それでは、`/whisk.system/utils`というパッケージのアクションのセットを利用してみましょう。
 
-Are you able to find out what is contained in this package?
+そのパッケージの中に何が含まれているか確認できますか？
 
-To create a binding run the following command:
+バインドするためには以下のコマンドを利用します。
 
 <pre>
 $ bx wsk package bind /whisk.system/utils myUtil
 <b>ok:</b> created binding <b>myUtil</b>
 </pre>
 
-This gives you access to the following actions:
-* `myUtil/cat`: Action to transform lines of text into a *JSON* array
-* `myUtil/head`: Action to return the first element in an array
-* `myUtil/sort`: Action to sort an array of text
+これによって下記のアクションにアクセスできます。
+* `myUtil/cat`:  テキストを *JSON* 配列に変換するためのアクション
+* `myUtil/head`: 配列の中の最初の要素を返すためのアクション
+* `myUtil/sort`: 配列の中のテキストをソートするためのアクション
 
-Let's now create a composite action that is a sequence of the above actions, so that the result of one action is passed as arguments to the next action:
+上記のアクションのシーケンスとなる複合型のアクションを作成してみましょう。1つのアクションの結果が次のアクションの実引数となっていく様子が見て取れることでしょう。
 
 <pre>
 $ bx wsk action create myAction --sequence myUtil/sort,myUtil/head
@@ -474,23 +475,23 @@ $ bx wsk action invoke -b myAction -p lines '["c","b","a"]' --result
 }
 </pre>
 
-You can see that the first element of the sorted array is returned.
+ソートされた配列の最初の要素が返されることがわかるでしょう。
 
-For learning how to create our own packages to enable services refer to the official documentation available here:
+サービスを有効化するための独自のパッケージの作成方法に関する公式の文書はこちら
 https://github.com/openwhisk/openwhisk/blob/master/docs/packages.md#creating-and-using-package-bindings
 
-## Triggers and rules
+## トリガーとルール
 
-*Triggers* represent a named "channel" for a stream of events.
+*トリガー* はイベントのストリームの名前つきの"チャンネル"を意味します。
 
-Let's create a trigger to send *location updates*:
+*location updates* を送信するためにトリガーを作成してみましょう。
 
 <pre>
 $ bx wsk trigger create locationUpdate
 <b>ok:</b> created trigger <b>locationUpdate</b>
 </pre>
 
-You can check that the trigger has been created like this:
+トリガーが作成されているか確認するには以下のようにします。
 
 <pre>
 $ bx wsk trigger list
@@ -498,36 +499,36 @@ $ bx wsk trigger list
 locationUpdate                         private
 </pre>
 
-So far we have only created a named channel to which events can be fired.
+イベントが起動するための名前つきのチャンネルを作っただけでは物足りませんね。
 
-Let's now fire the trigger by specifying its name and parameters:
+名前とパラメータを特定した上でトリガーを起動できるようにしてみましょう。
 
 <pre>
 $ bx wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
 <b>ok:</b> triggered <b>locationUpdate</b> with id <b>11ca88d404ca456eb2e76357c765ccdb</b>
 </pre>
 
-Events you fire to the `locationUpdate` trigger currently do not do anything. To be useful, we need to create a rule that associates the trigger with an action.
+今`locationUpdate`に起こしたイベントは今の状態では何もしません。何か働きを持たせるには、トリガーとアクションを関連付けるためのルールが必要です。
 
-## Using rules to associate triggers and actions
+## ルールによるトリガーとアクションの連携
 
-*Rules* are used to associate a trigger with an action. Hence, every time a trigger event is fired, the action is invoked together with the events' parameters.
+*ルール* トリガーとアクションを関連付けるために用いられます。これにより、イベントトリガーが起動するたびにアクションはイベントのパラメータとともにinvokeされます。
 
-Let's create a rule that calls the `hello` action whenever a location update is posted; required parameters are the `name` of the rule, the trigger, and the action:
+location updateがある度に`hello`アクションを呼び出すルールを作成してみましょう。必要となるパラメータはルールの`name`、トリガーそしてアクションです。
 
 <pre>
 $ bx wsk rule create myRule locationUpdate hello
 <b>ok:</b> created rule <b>myRule</b>
 </pre>
 
-Now, every time we fire a location update event, the `hello` action will be called with the corresponding event parameters:
+これで、location updateイベントが起こるたびに`hello`アクションが該当するイベントのパラメータとともに呼び出されます。
 
 <pre>
 $ bx wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
 <b>ok:</b> triggered <b>locationUpdate</b> with id <b>2c0b4602f5a84ea1b049a57c059e1ec1</b>
 </pre>
 
-We can check that the action was really invoked by checking the most recent activations:
+最新のアクティベーションをチェックした上でアクションが実際にinvokeされていることが確認できます。
 
 <pre>
 $ bx wsk activation list hello
@@ -536,9 +537,9 @@ $ bx wsk activation list hello
 8b61fbedb91144269fee474e5f503e67       hello
 </pre>
 
-Notice that the use of the optional argument `hello` filters the result so that only invocations of the `hello` action are being displayed.
+オプションとなる実引数`hello`が結果をフィルターし、`hello`アクションが反映されていることが確認できるでしょう。
 
-Again, to obtain the result of the particular action invocation enter (notice that you once again need to replace the `activation id` with the `id`you have received during the previous step):
+ご紹介済みですが、特定のアクションの呼び出し結果を入手する方法は以下となります。(`activation id`はご自身の作業環境でそれまでの作業の中で獲得した`id`に書き換える必要があります。)
 
 <pre>
 $ bx wsk activation result 12ca88d404ca456eb2e76357c765ccdb
@@ -547,15 +548,15 @@ $ bx wsk activation result 12ca88d404ca456eb2e76357c765ccdb
 }
 </pre>
 
-We can finally see that the `hello` action received the event payload and returned the expected string.
+これでようやく`hello`アクションがイベントペイロードを受け取り変数を返していることが確認できます。
 
-## Uploading dependencies
+## 依存性(dependencies)のアップロード
 
-As an alternative to writing all your code in a single *JavaScript* source file, you can implement an action as an `npm` package (requiring NodeJS (https://nodejs.org/) to be installed, of course).
+単一の *JavaScript* ソースファイルにすべてのコードを書きあげる代わりに`npm`パッケージとしてアクションを実行することができます。(NodeJS (https://nodejs.org/) のインストールが必要です).
 
-The structure is supposed to look as follows:
+構成は以下のようになります。
 
-First, define a `package.json` like this:
+まずこのように`package.json`を定義します。
 
 ```json
 {
@@ -568,7 +569,7 @@ First, define a `package.json` like this:
 }
 ```
 
-Next, define an `index.js` like this:
+次に、`index.js`をこのように定義します。
 
 ```javascript
 function myAction(params) {
@@ -581,32 +582,32 @@ function myAction(params) {
 exports.main = myAction;
 ```
 
-Notice that the action is exposed through `exports.main`; hence, the action handler itself can have any name, as long as it conforms to the usual signature of accepting an object and returning an object (or a `Promise` of an object).
+アクションが`exports.main`で出力されていますね。このように、アクションハンドラーは、オブジェクトのやり取り(やオブジェクトの`Promise`)を許容するものであれば、どんな名称を取ることもできます。
 
-Then, to create an OpenWhisk action from this package follow the following procedure:
+このパッケージからIBM Cloud Functionsのアクションを作成するには以下の手順に従います。
 
-First, install all dependencies locally:
+まず、ローカル環境ですべての依存性をインストールします。
 
 <pre>
 $ npm install
 </pre>
 
-Next, create a .zip archive containing all files (including all dependencies):
+次に、すべてのファイル(および依存性)を含む.zipアーカイブを作成します。
 
 <pre>
 $ zip -r action.zip *
 </pre>
 
-Next, create the action:
+そしてアクションを作成します。
 
 <pre>
 $ bx wsk action create packageAction --kind nodejs:6 action.zip
 <b>ok:</b> created action <b>packageAction</b>
 </pre>
 
-Notice that when creating an action from a .zip archive using the CLI tool, you must explicitly provide a value for the `--kind` flag.
+CLIツールを用いて.zipアーカイブからアクションを作成する際には、明示的に`--kind`フラッグへ値を提供しなければなりません。
 
-You can finally invoke the action like any other:
+最後に他の作業と同じようにinvokeします。
 
 <pre>
 $ bx wsk action invoke --blocking --result packageAction --param lines '["and now", "for something completely", "different"]'
@@ -619,7 +620,7 @@ $ bx wsk action invoke --blocking --result packageAction --param lines '["and no
 }
 </pre>
 
-Finally, notice that while most `npm` packages install *JavaScript* sources on `npm install`, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only *JavaScript* dependencies. Action invocations may fail if the archive includes binary dependencies.
+ほとんどの`npm`パッケージは`npm install`上の *JavaScript* ソースをインストールしますが、それに加えてバイナリアーティファクトをインストールしコンパイルするものもあります。アーカイブファイルのアップロードは現在バイナリ依存をサポートせず、 *JavaScript* 依存のみをサポートしています。バイナリ依存を含むアーカイブの場合にはアクションの呼び出しに失敗します。
 
 # Boost your engines!
 
