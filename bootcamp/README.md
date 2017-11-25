@@ -14,19 +14,19 @@
   * [Triggers and rules](#triggers-and-rules)
   * [Using rules to associate triggers and actions](#using-rules-to-associate-triggers-and-actions)
   * [Uploading dependencies](#uploading-dependencies)
-- [Boost your engines!](#boost-your-engines-)
-  * [Getting started with the OpenWhisk UI](#getting-started-with-the-openwhisk-ui)
-  * [Actions](#actions-1)
-    + [Invoking actions via REST calls](#invoking-actions-via-rest-calls)
-    + [Invoking actions via web actions](#invoking-actions-via-web-actions)
-      - [Web action responses](#web-action-responses)
-    + [Invoking actions periodically](#invoking-actions-periodically)
-  * [Logging](#logging)
-  * [Working with packages](#working-with-packages)
-    + [Sequencing actions](#sequencing-actions)
-  * [Triggers](#triggers)
-  * [Rules](#rules)
-  * [Monitoring](#monitoring)
+- [さらに深い理解を求めて](#boost-your-engines-)
+  * [IBM Cloud Functions UIを利用する](#getting-started-with-the-openwhisk-ui)
+  * [アクション](#actions-1)
+    + [Rest形式でアクションを呼び出す](#invoking-actions-via-rest-calls)
+    + [web actionsを通してアクションを呼び出す](#invoking-actions-via-web-actions)
+      - [web actionによるレスポンス](#web-action-responses)
+    + [アクションの定期実行](#invoking-actions-periodically)
+  * [ログ](#logging)
+  * [パッケージの活用](#working-with-packages)
+    + [アクションのシーケンス化](#sequencing-actions)
+  * [トリガー](#triggers)
+  * [ルール](#rules)
+  * [モニタリング](#monitoring)
 - [Build a weather engine!](#build-a-weather-engine-)
   * [Address to locations service](#address-to-locations-service)
   * [Forecast from location service](#forecast-from-location-service)
@@ -92,7 +92,7 @@ We wish you a lot of fun and success...
 
 # サーバーレスコンピューティング
 
-**サーバーレスコンピューティング**（別名**Funcions-as-a-Service (FaaS)**）は、サーバーの存在が完全に抽象化されているモデルを指します。
+**サーバーレスコンピューティング**（別名 **Funcions-as-a-Service (FaaS)** ）は、サーバーの存在が完全に抽象化されているモデルを指します。
 つまり、サーバーがまだ存在していても、開発者はサーバの運用を気にする必要から解放されます。
 スケーラビリティ、高可用性、インフラストラクチャセキュリティなどの低レベルのインフラストラクチャと運用を考慮する必要から解放されています。
 したがって、サーバーレスコンピューティングは、開発者が付加価値の高いコードを開発することに迅速に集中できるように、基本的にメンテナンスの労力を軽減することです。
@@ -629,48 +629,48 @@ $ bx wsk action invoke --blocking --result packageAction --param lines '["and no
 
 ほとんどの`npm`パッケージは`npm install`上の *JavaScript* ソースをインストールしますが、それに加えてバイナリアーティファクトをインストールしコンパイルするものもあります。アーカイブファイルのアップロードは現在バイナリ依存をサポートせず、 *JavaScript* 依存のみをサポートしています。バイナリ依存を含むアーカイブの場合にはアクションの呼び出しに失敗します。
 
-# Boost your engines!
+# さらに深い理解を求めて
 
-As an alternative to the CLI, you can also use the OpenWhisk UI, esp. the visual code editor, to work with OpenWhisk's basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let's learn how to work with the OpenWhisk UI.
+CLIに代わるものとして、IBM Cloud Functions UIというビジュアルコードエディタも、アクション・トリガー・ルール・シーケンスの作成といったIBM Cloud Functionsの基本的な作業を行うことができます。それでは、IBM Cloud Functions UIの使い方を学んでいきましょう。
 
-## Getting started with the OpenWhisk UI
+## IBM Cloud Functions UIを利用する
 
-First, open a browser window, navigate to https://console.ng.bluemix.net/openwhisk/ and click `Develop`.
+ブラウザーウィンドウを開き、 https://console.ng.bluemix.net/openwhisk/ にアクセスし、「作成の開始」をクリックしましょう。
 
-The OpenWhisk UI is comprised of the following sections:
+IBM　Cloud Functions UIは次のセクションを含みます。
 
-1. `My Actions`  
-   The `My Actions` section lists all actions you have created previously.  
-   Clicking an action loads its code into the code editor.  
-   Hovering over an action lets a trash bin appear allowing to delete the action.  
-   At this point in time you should at least see the `hello` action we have created earlier.  
+1. `マイ･アクション`  
+   `マイ・アクション`セクションにはあなたがそれまでに作成したアクションがリスト化されています。
+   アクションをクリックすると、コードがエディタへとロードされます。
+   アクションの上にカーソルをかざせばゴミ箱マークが出てきて、アクションを削除することができます。  
+   この時点で最低でもこれまでに作成した`hello`アクションを確認することができるでしょう。
 
-2. `My Sequences`  
-   The `My Sequences` section lists all the sequences you have created previously.  
-   Clicking a sequence loads its model into the visual modeler.  
-   Hovering over a sequence lets a trash bin appear allowing to delete the sequence.  
+2. `マイ・シーケンス`  
+   `マイ・シーケンス`セクションにはあなたがそれまでに作成したシーケンスがリスト化されています。
+   シーケンスをクリックすればモデルがビジュアルモデラーへとロードされます。
+   シーケンスにカーソルをかざせばゴミ箱マークが出てきて、シーケンスを削除することができます。
 
-3. `My Rules`  
-   The `My Rules` section lists all the rules you have created previously.  
-   Clicking a rule loads its model into the visual modeler.  
-   Hovering over a rule lets a trash bin appear allowing to delete the rule.  
-   At this point in time you should at least see the `myRule` rule we have created earlier.  
+3. `マイ・ルール`  
+   `マイ・ルール`セクションにはあなたが作成したルールがリスト化されています。
+   ルールをクリックすればモデルがビジュアルモデラーへとロードされます。
+   ルールにカーソルをかざせばゴミ箱マークが出てきてルールを削除することができます。
+   この時点で最低でもこれまでに作成した`myRule`ルールを確認することができるでしょう。
 
-4. `My Triggers`  
-   The `My Triggers` section lists all the triggers you have created previously.  
-   Hovering over a trigger lets a flash icon appear allowing to fire the trigger as well as a trash bin allowing to delete the trigger.
+4. `マイ・トリガー`  
+   `マイ・トリガー`セクションにはあなたが作成したトリガーがリスト化されています。
+   トリガーにカーソルをかざせば、閃光アイコンをクリックしてトリガーを起動したり、ゴミ箱マークをクリックしてトリガーを削除したりすることができます。
 
-## Actions
+## アクション
 
-Let's start exploring the UI by creating some simple first actions similar to the ones we have created before when having used the CLI.
+それではCLIを使ったときと同様にUIを使って簡単なアクションを作成して使い方を探ってみましょう。
 
-First, click the `Create an Action` button.  
-Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`.  
-Leave everything else as-is and click the `Create Action` button at the bottom of the screen.
+まず、「`アクションの作成`」ボタンをクリックします。
+次に、任意の名前(例：`helloUI`)を「`アクション名`」のボックスの中に入力しましょう。
+他の項目はそのままにし、画面上の「`作成`」ボタンをクリックします。
 
-Notice that even though you did not change any configuration options, you would have had the option to change the `language` you want to implement your action in as well as the `memory quota` and the `time limit`. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
+オプションをいじらなくても、`languages`や`memory quota`・`time limit`などを編集したいと思うかもしれません。そういったときは`Learn more`リンクをクリックしてより詳細な情報を取得しお好きに設定を変更して構いません。
 
-Copy the following code into the code editor replacing any existing code:
+以下のコードをエディターにコピーして既存で書かれたコードの上に上書きしてください。
 
 ```javascript
 function main() {
@@ -678,12 +678,13 @@ function main() {
 }
 ```
 
-Next, click the `Run this Action` button to test the action directly from within your browser.  
-Before being able to run your action you need to make it live, hence click the `Make It Live` button when being prompted to do so.  
-Afterwards click the `Run with this Value` button.
+次に「`アクションを実行`」ボタンをクリックし、ブラウザから直接アクションのテストをしてください。
+アクションを作動する前にそれをlive状態にする必要があります。なのでテスト状態を追え実際に作用させるには「`ライブにする`」ボタンをクリックしてください。
+その後、「`この値で実行`」ボタンをクリックしてください。
 
-Notice that you do not need to specify any *JSON* input as the action is not expecting any parameters to be handed over.
+アクションはパラメータの引渡しを必要としていませんので、*JSON* インプットを明示する必要はありません。
 
+下の結果を確認できるはずです。
 You should see the following result:
 
 <pre>
@@ -692,10 +693,10 @@ You should see the following result:
 }
 </pre>
 
-Next, to see how things work when working with an action accepting parameters click the `Create an Action` button again.  
-Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
+次に、アクションがパラメータを持つ際にどのような動きをするのかを確認するために、再度`アクションの作成`ボタンをクリックしてください。
+そして、再度、任意の名称(例：`helloUI2`)を入力し、`アクションの作成`ボタンをクリックしてください。
 
-Next, copy the following code into the code editor replacing any existing code:
+次に、下記のコードをエディタに上書きしてください。
 
 ```javascript
 function main(params) {
@@ -703,9 +704,9 @@ function main(params) {
 }
 ```
 
-Once again, click the `Run this Action` button and follow the same procedure as before to test this action directly from within your browser.
+繰り返しになりますが、`アクションを実行`ボタンを、先ほどと同様にブラウザ上でこのアクションのテストの様子を確認してください。
 
-Notice that you this time need to specify some *JSON* input to specify proper parameter values. For instance, you could specify the following input:
+今回は任意のパラメータが必要となりますので *JSON* 形式のインプットが必要となります。例えば、下記のような値をインプットします。
 
 ```json
 {
@@ -714,7 +715,7 @@ Notice that you this time need to specify some *JSON* input to specify proper pa
 }
 ```
 
-You should see the following result:
+すると、下記のような結果が現れるでしょう。
 
 <pre>
 {
@@ -722,21 +723,21 @@ You should see the following result:
 }
 </pre>
 
-### Invoking actions via REST calls
+### Rest形式でアクションを呼び出す
 
-Actions cannot only be invoked via the CLI or the OpenWhisk UI, they can also be invoked via simple *REST* API calls. All you need to do is to `POST` against the correct *REST* API endpoint.
+アクションはCLIやIBM Cloud Functions UIを通してという形ではinvokeできません。また、*REST* APIのコールという形でもできません。*REST* APIエンドポイントに`POST`するという形をとることが必要です。
 
-To find out about the correct *REST* API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier, and click the `View REST Endpoint` link at the bottom right of the code editor.
+アクションに対する正しい *REST* APIエンドポイントを捉えるには、アクション(例：`helloUI`)を選択し、エディタの右下にある`RESTエンドポイントの表示`リンクをクリックします。
 
-To test this use the `cURL URL`; just click the `Copy` button displayed next to the `cURL URL` shown and submit it.
+テストをするには、`cURL URL`を使います。`cURL URL`の隣にある`コピー`ボタンをクリックし実行してください。
 
-For instance, to invoke the `helloUI` action we have created earlier submit a call like this:
+例えば`hello UI`アクションをinvokeするには、このようにします。
 
 <pre>
 $ curl -d "{\"arg\":\"value\"}" "https://openwhisk.ng.bluemix.net/api/v1/namespaces/andreas.nauerz%40de.ibm.com_dev/actions/helloUI?blocking=true" -XPOST -H "Content-Type: application/json" -H "Authorization: Basic xxx="
 </pre>
 
-You should see the following result:
+すると、以下の結果が確認できるでしょう。
 
 <pre>
 [...]
@@ -750,39 +751,39 @@ You should see the following result:
 [...]
 </pre>
 
-### Invoking actions via web actions
+### web actionsを通してアクションを呼び出す
 
-Web actions are OpenWhisk actions annotated to quickly enable you to build web based applications. This allows you to program backend logic which your web application can access anonymously without requiring an OpenWhisk authentication key. It is up to the action developer to implement their own desired authentication and authorization (i.e. `OAuth` flow).
+Web actionsはIBM Cloud Functionsのwebベースのアプリケーションをすばやく構築するためのアクションです。これにより、IBM Cloud Functionsの認証キーを得ることなく、ウェブアプリケーションは匿名的にバックエンドプログラムにアクセスすることができます。認証・認可サービス(例：`Oauth`)の実装はアクションの作成者に委ねられています。
 
-Web action activations will be associated with the user that created the action. This actions defers the cost of an action activation from the caller to the owner of the action. To allow the previously created `hello` action to be called as a web action enter:
+Web actionのアクティベーションはアクションの作成者が行います。このアクションはアクションの呼び出し者からオーナーへのアクションのアクティベーションにかかるコストを大きくします。いままで`hello`と呼ばれていたアクションをweb action enterとするには以下のようにします。
 
 <pre>
 $ bx wsk action update hello --web true
 <b>ok:</b> updated action <b>hello</b>
 </pre>
 
-Once enabled your action is supposed to be accessible as a web action via a new *REST* interface.
+一度アクションを実行可能にすれば、新たな *REST* インターフェースを通したweb actionとして利用可能になります。
 
-The `URL` is structured as follows: `https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`. The fully qualified name of an action consists of three parts: the `namespace`, the `package name`, and the `action name`. The fully qualified name of a web action must include its package name, which is `default` if the action is not in a named package. The last part of the `URI` called the extension which is typically `.http` or .`json`. The web action API path may be used with `cURL` or `wget` without an API key. It may even be entered directly in your browser.
+`URL`は以下のように構成されていますー`https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`。このQualified Action Nameの部分には`namespace`・`packagename`・`action name`の3つのパートが盛り込まれています。web actionのQualified nameには名前付パッケージに内蔵されていなければ`デフォルトの`パッケージ名が盛り込まれているでしょう。`URI`の最後の部分には、`http`や`json`といった拡張子が入ります。web action APIのパスにはAPI keyではなく、`cURL`や`wget`が用いられます。それはブラウザに直接入力されます。
 
-Try opening `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/hello.json?name=Andreas&place=Stuttgart` in your web browser after having replaced the namespace `andreas.nauerz@de.ibm.com_dev` with your namespace.
+namespaceを`andreas.nauerz@de.ibm.com_dev`から自らのものに変更した上で、`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/hello.json?name=Andreas&place=Stuttgart`を開いてみましょう。
 
-Notice that you can also enable any action as a web action using the OpenWhisk UI. There you can also find out about the correct `URL` to invoke your web actions.
+どんなアクションもIBM Cloud Functions UIを用いてweb actionとして利用可能であることがわかるでしょう。また、web actionをinvokeするための正確な`URL`も見つけることができるでしょう。
 
-We leave this as a voluntary exercise for you – will you find the right place?
+このファイルはちょっとしたドリルとしてみなさんのために残しておきましょう。正しい場所はわかりましたか？
 
-#### Web action responses
+#### web actionによるレスポンス
 
-Web actions can also be used to implement *HTTP* handlers that respond with `headers`, `statusCode`, and `body` content of different types. The web action must still return a *JSON* object, but the OpenWhisk system (namely its `controller`) will treat a web action differently if its result includes one or more of the following as top level *JSON* properties:
-* `headers`: a *JSON* object where the keys are header-names and the values are string values for those headers (default is no headers)
-* `statusCode`: a valid *HTTP status code* (default is 200 OK)
-* `body`: a string which is either plain text or a base64 encoded string (for binary data)
+web actionsは *HTTP* ハンドラーとして実装できます。*HTTP* ハンドラーは`ヘッダー`・`ステータスコード`・`ボディ`を有します。その場合でもweb actionは *JSON* オブジェクトを返す必要がありますが、その`コントローラー`となるIBM Cloud Functionsは、その結果が下記の *JSON* プロパティを含む場合、web actionの挙動を異にします。
+* `ヘッダー`：キーをヘッダーネームとし、値をそのヘッダーの文字値とする *JSON* オブジェクト(デフォルトではヘッダーは有さない)
+* `ステータスコード`: *HTTPステータスコード* (デフォルトでは200文字まで許容)
+* `ボディ`: (バイナリデータのための)プレインテキストまたはbase64エンコード文字列
 
-The `controller` will pass along the action-specified *headers*, if any, to the *HTTP* client when terminating the *request/response*. Similarly, the `controller` will respond with the given *status code* when present. Lastly, the *body* is passed along as the *body* of the *response*. Unless a *content-type header* is declared in the actions' result *header*, the *body* is passed along as is if it's a string (or results in an error otherwise). When the *content-type* is defined, the `controller` will determine if the *response* is binary data or plain text and decode the string using a *base64 decoder* as needed. Should the *body* fail to decode correctly, an error is returned to the caller.
+`コントローラ` はアクションが特定づけられた *ヘッダー* に紐づけられます。もし対象となるヘッダがないようであれば、 *リクエスト/レスポンス* 終了時に *http* クライアントと紐づけられます。同様に、 `コントローラ`は与えられた *ステータスコード* がある際にはそれを返します。そして、*ボディ* は *レスポンス* の *ボディ* に紐づけられます。もしも *Content-Typeヘッダー* がアクションの結果の *ヘッダー* 内で宣言されていなければ、それが文字列であれば(あるいはエラーが排出されれば) *ボディ* はそれそのものと紐づけられます。 *Content-Type* が定義づけられていれば、`コントローラ`は *レスポンス* がバイナリデータまたはプレインテキストかを見極め、必要に応じて *Base64デコーダ* を用いた文字列をデコードします。もしも、 *ボディ* が正確にデコードできなければ、エラーが返されます。
 
-Notice that a *JSON* object or array is treated as binary data and must be *base64* encoded.
+*JSON* オブジェクトまたは配列はバイナリデータで *Base64* エンコードでなければいけません。
 
-Now, let's make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this:
+さあ、`ヘッダー`と`ステータスコード`を正確に作成しリダイレクトを送ってみましょう。下のように、`webAction`というアクションを作成してください。
 
 ```javascript
 function main() {
@@ -793,17 +794,17 @@ function main() {
 }
 ```
 
-Enable the action as web action:
+アクションをweb actionとして実行します。
 
 <pre>
 $ bx wsk action update webAction --web true
 <b>ok:</b> updated action <b>webAction</b>
 </pre>
 
-Try opening
-`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz%40de.ibm.com_dev/default/webAction.http` in your browser (again after having replaced the namespace with yours). You should be redirected to the openwhisk.org site.
+（namespaceを自分のものに書き換えた上で）ブラウザで次のリンクを開いてみてください。
+`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz%40de.ibm.com_dev/default/webAction.http` openwhisk.orgのサイトにりだいれくとされることでしょう。
 
-Next, let's make use of the `headers`, `status` and `body` properties to respond with an image. To do so update the previously created web action like this:
+次に`ヘッダー`・`ステータス`・`ボディ`のプロパティをイメージと共に返されるようにしてみましょう。それでは先に作成したweb actionをアップデートしましょう。
 
 ```javascript
 function main() {
@@ -814,11 +815,11 @@ function main() {
 }
 ```
 
-Notice that you can use any online available base64 encoder to generate the above mentioned string to encode an image of your choice.
+オンラインで利用できるBase64エンコーダはどれでも、あなたが選択したイメージをエンコードするために上に示された文字列のようにして利用できます。
 
-Again, invoke the web action via your browser. You should see the your image.
+再び、ブラウザを通してweb actionを実行してください。指定したイメージを確認できるでしょう。
 
-Finally, let's make use of the `headers`, `status` and `body` properties to respond with simple *HTML*. To do so update the previously created web action like this:
+最後に、`ヘッダー`・`ステータス`・`ボディ`のプロパティから簡単な *HTML* を返してみましょう。先に作成したweb actionを次のようにアップデートしてください。
 
 ```javascript
 function main() {
@@ -829,30 +830,29 @@ function main() {
 }
 ```
 
-Again, invoke the web action via your browser. You should see the the message `Hello World!`.
+もう一度web actionをブラウザで実行してください。`Hello World!`というメッセージを確認できるでしょう。
 
-### Invoking actions periodically
+### アクションの定期実行
 
-Also, actions cannot only be invoked in a blocking (synchronous) or non-blocking (asynchronous) fashion as explained before, they can also be invoked *periodically*.
+以前説明したようにアクションはブロッキング(同期)または非ブロッキング(非同期)型のどちらかのみでは実行できませんが、アクションは *定期的な* 実行が可能です。
 
-To test this open the OpenWhisk UI and select the `helloUI` action we have created earlier.  
-Next, click the `Automate this Action` button at the bottom right of the code editor.  
-Next, from the next screen appearing select the `Periodic` icon.  
-Next, create a new trigger aka alarm by clicking the `New Alarm` icon.  
-To keep things simple select the `:MM minutes` icon and specify `N` to be `1` so that they action is supposed to be executed every minute.  
-Specify a name for the periodic trigger and click the `Create Periodic Trigger` button.  
-Finally, click `Next`, then `This Looks Good`, and then `Save Rule`.
+これをテストするには、IBM Cloud Functions UIを開き以前作成した`helloUI`を選択してください。
+次に、コードエディタの右下部にある「`このアクションを自動化`」ボタンをクリックしてください。  
+それから、次の画面で`Periodic`のアイコンを選択してください。
+`新規アラーム`アイコンをクリックし、新しいトリガー(アラーム)を作成しましょう。
+`:MM minutes`アイコンを選択肢、`N`を`1`にしてアクションが毎分起動するようにしましょう。
+この定期トリガーに任意の名称をつけ、`定期的なトリガーの作成`ボタンをクリックしましょう。
+最後に`次へ`をクリックし、`これは適切なようです`を選択した後、`ルールの保存`を押しましょう。
 
-To see the result click the `View Activity` button which redirects you to the dashboard. You should see a periodic invocation every minute – to stop this you have to disable the rule that has been created – will you find out how this can be done?
+結果を見るには、`アクティビティの表示`を押してダッシュボードを確認しましょう。毎分アクションが実行されていることがわかります。これを止めるには、作成したルールを無効化する必要があります。どこで実行すれば良いかわかりますか？
 
-## Logging
+## ログ
+もちろんIBM Cloud Functionsではアクションにカスタムログのステートメントを加えることもできます。
 
-Of course, OpenWhisk allows you to add custom log statements to your actions, too.
+ログがどのように稼働しているかを確認するには、`アクションの作成`ボタンをクリックしてください。
+そして、任意の名前をつけ(例：`helloLogging`)、`アクションの作成`ボタンをクリックしてください。
 
-To see how logging works click the `Create an Action` button again.  
-Then, once again, specify a name (e.g. `helloLogging`) and click the `Create Action` button.
-
-Next, copy the following code into the code editor replacing any existing code:
+次に、下のコードをコピーし、コードエディタ上の既存のコードに上書きしてください。
 
 ```javascript
 function main(params) {
@@ -861,9 +861,9 @@ function main(params) {
 }
 ```
 
-Once again, click the `Run this Action` button and follow the same procedure as before to test this action directly from within your browser.
+`このアクションを実行`ボタンをクリックし、今までの手順と同様にし、ブラウザ上でアクションをテストしてください。
 
-You should see the following result:
+すると、下の結果を得ることができるでしょう。
 
 <pre>
 {
@@ -871,37 +871,37 @@ You should see the following result:
 }
 </pre>
 
-To review the log you can click the `Show Logs` link after having invoked the action.
+ログを確認するには、アクションを実行した後に、`ログの表示`リンクをクリックします。
 
-You should a log statement like this:
+下のようなログが確認できるでしょう。
 
 <pre>
 2016-10-18T08:36:34.472273207Z stdout: Running helloLogging...
 </pre>
 
-At this point feel free to create your own little action, maybe one you implement using a different programming language. To learn how to do the latter refer to the official documentation available here:
+あなたのオリジナルのアクションでも自由に試した時に、異なるプログラミング言語で実行することがあるかもしれません。その場合には、以下のリンクを参照して公式の文書を参照してください。
 
 https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-python-actions
 https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-swift-actions
 https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-java-actions
 https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-docker-actions
 
-## Working with packages
+## パッケージの活用
 
-As you have already seen before, OpenWhisk provides you, out of the box, with a shared collection of actions and triggers as part of so called packages. The OpenWhisk UI makes it even easier to explore and test available packages. Let's learn how to do so now.
+これまでに確認したように、IBM Cloud Functionsでは、パッケージとしていくつかのアクションやトリガーを提供しています。さらにIBM Cloud Functions UIによってパッケージの探索やテストが簡単になっています。これらをどのように用いればいいか学んでいきましょう。
 
-First, click the `Browse Public Packages` button at the top right of the screen.  
-You'll be presented with a set of packages, represented by some icons, being available.
+まず、画面の右上部にある`パブリックパッケージの参照`ボタンをクリックしましょう。
+パッケージが利用可能ないくつかのパッケージがアイコンとともに表示されます。
 
-Click the `Samples` package.  
-At the left of the screen you will be shown a short description of the functionality this package provides you with. At the top center of the screen you can access the different actions and triggers the package provides you with (notice that the samples package provides you only with actions).  
-You can choose between the following actions: `curl`, `greeting`, `helloWorld`, `wordCount`. For each action a short description and sample input you can feed it with as well as sample output you can expect to get when invoking the action is being provided.
+`Samples`パッケージをクリックしましょう。
+画面の左部に短いこのパッケージの機能の簡単な説明が表示されます。上部中央からはパッケージが提供する異なるアクションやトリガーへとアクセスできます。(Samplesパッケージでは表示されたアクションのみが提供されています。)
+`curl`・`greeting`・`helloWorld`・`wordCount`からアクションを選択できます。簡単な実行内容の説明とサンプル入力とそれによって実行した時にどのような出力が得られるか各アクションごとに表示されます。
 
-Let's play with the `wordCount` action.  
-Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.  
-Click the `Run this Action` button.
+`wordCount`アクションを試してみましょう。
+`wordCount`アクションを選択し、説明書きを読んでその機能を理解してください。また、サンプル入力を確認し、どのようにアクションを作成すればいいか、またその実行後どのような出力結果を得られるかを確認しましょう。
+`このアクションを実行`ボタンをクリックしましょう。
 
-Based on the sample input you have been shown before, specify the following input and click the `Run with this Value` button:
+実行前に確認したサンプル入力をベースにして、JSON入力欄に下のコードを貼り付け、`この値で実行`ボタンをクリックしましょう。
 
 ```json
 {
@@ -909,7 +909,7 @@ Based on the sample input you have been shown before, specify the following inpu
 }
 ```
 
-You should see the following result:
+すると以下の結果が得られるでしょう。
 
 <pre>
 {
@@ -917,20 +917,20 @@ You should see the following result:
 }
 </pre>
 
-Instead of just reusing a package-provided action as-is you can also view its code (which you may want to use as a basis for your own action).
+パッケージとして提供されたアクションをそのまま転用するのではなく、それに含まれるコードを確認することができますね。(そうすることで、自ら作成したアクションにコードを活用できます。)
 
-Let's review the code of the `curl` action.  
-Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.  
-This time select the `curl` action and read the description to understand its purpose.  
-Next, click the `View Source` button to (re)view and understand the action's code.
+`curl`アクションのコードを確認してみましょう。
+カタログに戻り(呼び出しコンソールを閉じるのに'閉じる'を押します)、もう一度`Samples`パッケージをクリックします。
+今回は`curl`アクションを選択し、説明書きを読みます。
+次に、`ソースの表示`ボタンをクリックし、アクションのコードを確認し理解します。
 
-At this point feel free play with the other packages being available.
+他のパッケージも同様に試してみてください。
 
-### Sequencing actions
+### アクションのシーケンス化
 
-Next, let's visually model a simple sequence similar to the one we have created earlier when having used the CLI.
+次に、先にCLIを用いた際と同様に簡単なシーケンスを視覚的にモデリングしてみましょう。
 
-Therefore, let's first create a very simple action (name it `echo`) the same way you learned to create actions before:
+そこでまずは、簡単なアクション(`echo`という名前にしてください)を今までと同様の方法で作成してください。
 
 ```javascript
 function main(params) {
@@ -938,31 +938,31 @@ function main(params) {
 }
 ```
 
-Obviously the action does nothing else than returning the text you have handed-over via the input parameter called `payload`.
+見ての通り、このアクションは`payload`と呼ばれるパラメータを通して持ち込まれたテキストを返すだけです。
 
-Now, let's assume you want to define a sequence that allows any text you hand over to the action `echo` to be translated from English to French.
+さて、もしかして`echo`に与えたテキストを全て英語からフランス語に翻訳するようなシーケンスを作ってみたくなったんじゃないですか？
 
-To make this happen, let's make use of the `translate` action part of the `Watson` package.
+これを作成するために`Watson`パッケージに入った`translate`アクションを実行してみましょう。
 
-Hence, we first need to create an instance of the `Watson Language Translator` service.  
-To do so click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Watson`.  
-Next, click `Language Translator`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
-Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
-Note down `username` and `password`.
+さて、まずは`Watson Language Translator`サービスのインスタンスを作成しましょう。
+まずは、画面の右上部にある`カタログ`リンク(パブリック・パッケージの参照ではありません)をクリックしましょう。
+画面の左部のメニューから`Watson`を選択します。
+次に、`Language Translator`をクリックします。
+全ての設定をそのままにし、画面右下部の`作成`をクリックします。
+次に、`サービス資格情報`タブに移り、`資格情報の表示`リンクをクリックします。
+`username`と`password`をメモします。
 
-Now, let's try to understand how the mentioned package and action works.  
-Hence, navigate back to the OpenWhisk UI and its catalog (`Browse Public Packages`) and click the `Watson Translator` package.  
-Click the `translator` action and read the description as well as the sample input and output to understand its purpose.
+それでは、このパッケージとアクションがどのように作用するのかみてみましょう。
+IBM Cloud Functions UIに戻り、カタログにアクセスし(`パブリック・パッケージの参照`)、`Watson Translator`パッケージをクリックします。
+`translator`アクションをクリックし、説明書きとサンプル入力/出力を読み内容を理解します。
 
-Next, to be able to use Watson, we need to create a binding.  
-Hence, click the `New Binding` button at the left of the screen.  
-Then, specify an arbitrary name and select the `Language Translator` instance you have created before (or specify an arbitrary name and the `username` and `password` you noted down before) and click `Save Configuration`.
+次に、Watsonを使えるようにするためにバインドします。
+画面の左にある`New Binding`ボタンをクリックします。
+任意の名称を入力し、先ほど作成した`Language Translator`インスタンスを選択します(あるいは任意の名称を入力した後、先ほど作成した`username`と`password`を入力してください)。そして、`構成の保存`をクリックしてください。
 
-Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run this Action`.
+次に、(まだ設定されていなければ)バインドしたものの選択、`translator`アクションが選択されたままになっているかの確認をし、`このアクションを実行`をクリックしてください。
 
-Specify the following input and click the `Run with this Value` (you may need to click `Make It Live` before) button:
+下のインプットを入力し、`この値で実行`ボタンをクリックします。(その前に`ライブにする`ボタンのクリックを求められるかもしれません。)
 
 ```json
 {
@@ -974,9 +974,10 @@ Specify the following input and click the `Run with this Value` (you may need to
 }
 ```
 
-Notice that you need to replace the values for `username` and `password` with the values you specified when you created the binding. Alternatively, you can remove the parameters `username` and `password` entirely which causes the default bound parameters to be used.
+`username`と`password`の値はバインドを作成した際に振られたものに書き換える必要があります。
+代わりに、デフォルトで入力されている`username`と`password`は削除して構いません。
 
-You should see the following result:
+すると、下の結果が得られるでしょう。
 
 ```json
 {
@@ -984,15 +985,15 @@ You should see the following result:
 }
 ```
 
-Now, let's chain the two actions together as a sequence.  
-Hence, select the `echo` action you have created earlier.  
-Click the `Link into a Sequence` button from the bottom right of the screen.  
-Then, from the next screen appearing select the `Watson Translator` package and the `translator` action as well as the binding you have created earlier.  
-Then, click the `Add to Sequence` button and then the `This Looks Good` button.  
-Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.  
-To test the sequence select it and click the `Run This Sequence` button.
+さて、それではシーケンスとして2つのアクションをくっつけてみましょう。
+先に作成した`echo`アクションを選択します。
+画面の右下部にある`シーケンスにリンク`ボタンをクリックします。
+それから、次の画面に表示される`Watson Translator`パッケージをクリックし、`translator`アクションと先に作成したバインドを選択します。
+そして、`シーケンスに追加`ボタンをクリックし、`これは適切なようです`ボタンを選択します。
+最後に、シーケンスの名前を入力し(任意)、`アクションシーケンスの保存`をクリックして、`完了`ボタンを選択します。
+シーケンスをテストするには`このシーケンスを実行`ボタンをクリックします。
 
-Specify the following input and click the `Run with this Value` button:
+下記のインプットを入力し、`この値で実行`ボタンをクリックします。
 
 ```json
 {
@@ -1002,7 +1003,7 @@ Specify the following input and click the `Run with this Value` button:
 }
 ```
 
-You should see the following result:
+するとしたの結果が得られるでしょう。
 
 ```json
 {
@@ -1010,60 +1011,63 @@ You should see the following result:
 }
 ```
 
-## Triggers
+## トリガー
 
-You can also work with triggers using the OpenWhisk UI.
+IBM Cloud Functions UIを用いてトリガーを実行できます。
 
-Let's assume you want to invoke the `hello` action you have created earlier as soon as something changes in a particular *Github* repository.
+特定の *Github* リポジトリに更新があった際に、先に作成した`hello`アクションを実行したいと思ったことはありませんか？
 
-First, select the `hello` action.  
-Next, click the `Automate this Action` button at the bottom right of the screen.
-Next, click the `Github` icon.  
-Then, click the `New Trigger` icon.  
+まず、`hello` アクションを選択します。
+次に、画面右下部の`このアクションを自動化`ボタンをクリックします。
+それから、`Github`アイコンをクリックします。
+そして、`新規トリガー`アイコンをクリックします。
 
-Notice that you need a *Github* account to proceed. In case you do not have an account sign-up now.
+ここから先に進めるには *Github* のアカウントが必要です。もし持っていないようでしたら、今sign-upしましょう。
 
-Specify your *Github* `username`, the `access token` and the `name` of the repository you want to watch.
+*Github* の`username`と`access token`、それからチェックしたいをリポジトリの`name`を入力します。
 
-Notice that in *Github* your `username` is shown when looking at what is shown under `Signed in as...` when being logged-in.   Your access token is shown under `Settings → Personal access tokens`. You probably have to create a new one by clicking the `Generate new token` button and by specifying a `name` and selecting the `repo` checkbox. Similarly, you may have to create a test repository to play around with.
+*Github* にて、`username`はログイン後の`Signed in as ...`の下に確認できます。access tokenは`Settings内のDeveloper Settings`にあります。`Generate new token`ボタンをクリックし、任意の`name`を入力し、`repo`チェックボックスをクリックします。同様に、テスト用のリポジトリも作成すると良いでしょう。
 
-Also notice that you can select the right repository from a pull-down menu after having specified your Gihub `username` and the `access token`.
+Githubの`username`と`access token`を入力すれば、リポジトリをプルダウンメニューから選択することもできます。
 
-For events simply specify `*` to listen to all events.
+eventsには`*`を入力し全てのイベントをチェックできるようにしましょう。
 
-Once you have filled out all input fields click the `Save Configuration` button.  
-Select the trigger you have just created (if not already selected) and click the `Next` button.  
-Next, click the `This Looks Good` button and, finally, the `Save Rule `button.
+全ての項目を入力したら、`構成の保存`ボタンをクリックしましょう。
+（もし選択されていなければ)先ほど作成したトリガーを選択し、`次へ`ボタンをクリックしましょう。
+次に、`これは適切なようです`ボタンをクリックし、`ルールの保存`を選択します。
 
-For testing purposes let's first fire the trigger manually.
+テストのために、まずはマニュアルに従ってトリガーを起動しましょう。
 
-To be able to observe what's going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked.   The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.  
-To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run with this Value` button to fire it.  
-In the next screen appearing click the `Run with this Value` button.  
-Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.  
+`アクティビティの表示`ボタンをクリックし、モニタリング用のダッシュボードを開くと、何が起こっているのかを確認することができます(このダッシュボードの詳細はこのあと説明があります。)。右上部では、起動されているトリガーと実行されているアクションを確認できます。定期的に自動で更新されます。`更新`アイコンをクリックすれば任意に更新することも可能です。
+テスト状態のまま続行するにはあなたのアクション・トリガー・ルールが示されているブラウザタブを選択し、先に作成したトリガーの上にカーソルをかざし、`このトリガーを起動`と書かれた`雷`アイコンをクリックして起動します。
+次の画面に現れる`この値で実行`ボタンをクリックします。
+それｋら、ブラウザタブをトリガーの起動状態を確認するためにモニタリングダッシュボードに戻し、たった今、`hello`アクションが起動したことを確認します。
 
-Finally, open another browser tab and log into *Github*.
+最後に新規のブラウザタブを開き、 *Github* にログインしてください。
 
-Navigate to your repository and add a file or change a file's content and commit your change.  
-Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
+あなたのリポジトリに行き、ファイルを追加するかファイルの内容を変更するかして、変更をコミットしてください。
+それから、モニタリングダッシュボードのブラウザタブに戻り、`hello`アクションが実行されていることを確認してください。
 
-## Rules
+## ルール
 
-Within the OpenWhisk UI rules are created in a similar way than sequences. You first select an action supposed to become part of the rule. Then you click the `Automate this Action` aka `Create a Rule` button just the way we already did it earlier.
+IBM Cloud Functions UIを使えばルールはシーケンスと同様にして作成できます。まずはルールの一部とするアクションを選択してください。
+それから、`このアクションを自動化`を`ルールの作成`ボタンとしてこれまでに行ったようにクリックしてください。
 
-Similarly than triggers rules can be manually invoked by clicking the `Fire This Trigger` button after having selected the rule. Alternatively, you can invoke the action part of a rule only by clicking the `Run Only the Action` button after having selected the rule. Try it out using the rules we have already created earlier.
+トリガーと同様にルールはルールを選択した後に`このトリガーを起動`ボタンをクリックすることで起動します。
+代わりに、ルールを選択した後で、`このアクションのみを実行`ボタンをクリックすることでルールの中の一部のみを実行できます。
+すでに作成したルールを利用して試してみてください。
 
-## Monitoring
+## モニタリング
 
-The monitoring dashboard that we have already used earlier allows you to observe your systems' behavior.
+モニタリングダッシュボードを使えばシステムの機動状況を確認できます。
 
-At the top left the dashboard visualizes the invocation counts per action or rule. This allows you to see how often particular actions or rules have been invoked and which actions or rules have been and are invoked most often. As part of the bar chart successful invocations are displayed in green, failed invocations in red.
+ダッシュボードの左上部アクションやルールごとの呼び出しカウントを確認できます。これによって、特定のアクションやルールがどんな頻度で呼び出されているのか、どれが最も呼び出されているのかを確認できます。棒グラフのうち、起動に成功したものは緑、失敗したものは赤で表示されます。
 
-At the top right the dashboard displays the recent activities, e.g. triggers that have fired or actions that have been invoked along with output being produced as well as some metadata like invocation times etc. Successful activities are displayed in green, failed ones in red. You can click an `activation id` to retrieve more details about a particular activation.
+ダッシュボードの右上部には最近のアクティビティが表示されています。呼び出されたトリガーやアクションは呼び出し時間などのメタデータと共に表示されています。成功したアクティビティは緑、失敗したものは赤で表示されています。`activation id`をクリックすれば、そのアクティベーションの詳細を確認することができます。
 
-At the center the dashboard visualizes the invocation counts over time representing load as this reveals how many invocations took place at a certain point in time. Again, as part of the bar chart successful invocations are displayed in green, failed invocations in red.
+ダッシュボードの中央部には特定の時点においてどれほどの呼び出しがあったかのカウントを確認できます。成功した呼び出しは緑、失敗した呼び出しは赤で表示されます。
 
-Play around with the actions, triggers, etc., you have created before, i.e. fire triggers, invoke actions and have a look at the monitoring dashboard while doing so.
+今までに作成したアクションやトリガーなどを試してみましょう。トリガーの起動、アクションの呼び出しなどをし、モニタリングダッシュボードの様子を確認してみましょう。
 
 # 天気予報エンジンを作る！
 
@@ -1071,7 +1075,7 @@ Play around with the actions, triggers, etc., you have created before, i.e. fire
 
 このデモでは、ユーザーに天気予報を通知する*Slack*用のボットを作成します。ユーザーはチャットメッセージを送信する事により、ボットに特定の場所の予測を尋ねることが出来ます。例えば毎日午前８時のように、ボットは定期的な感覚で位置の予測を送信するように設定することも出来ます。
 
-ボットはいくつかの機能が必要です。例えばアドレスを場所に変換し、場所の天気予報を取得し、*Slack*と統合します。ボットをモノシリックアプリケーションとして実装するのではなく、これらすべての機能のロジックを含んでいるため、別のサービスとして展開したいと考えています。
+ボットはいくつかの機能が必要です。例えばアドレスを場所に変換し、場所の天気予報を取得し、*Slack* と統合します。ボットをモノシリックアプリケーションとして実装するのではなく、これらすべての機能のロジックを含んでいるため、別のサービスとして展開したいと考えています。
 
 後に、シーケンスを使用してバインドする方法を見ていきます。コードを書かずにボットを作成することができます。
 
@@ -1187,7 +1191,7 @@ $ bx wsk action create forecast_from_latlong forecast_from_latlong.js
 <b>ok:</b> created action <b>forecast_from_latlong</b>
 </pre>
 
-Notice サービスは４つのパラメータ、`緯度`と`経度｀が`サービス資格情報`(これまでに書き留めたもの)と一緒になることを期待しています。パラメータとして、`サービス資格情報`を渡すと、コード内に埋め込む必要がなくなり、実行時に動的に変更することが出来ます。
+Notice サービスは４つのパラメータ、`緯度`と`経度`が`サービス資格情報`(これまでに書き留めたもの)と一緒になることを期待しています。パラメータとして、`サービス資格情報`を渡すと、コード内に埋め込む必要がなくなり、実行時に動的に変更することが出来ます。
 
 アクションをもう一度試してみましょう:
 
@@ -1218,16 +1222,16 @@ $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 
 ## Slackへのメッセージ送信
 
-予測ができたら、ボットのメッセージとして*Slack*に送信する必要があります。*Slack*は、*webhook*を利用して単純なボットを書く簡単な方法を提供します。着信webhookは、通常の*HTTP*リクエストを使用してデータを送信するURLをアプリケーションに提供します。*JSON*リクエスト本文の内容はぼっとメッセージとしてチャンネルに投稿されます。
+予測ができたら、ボットのメッセージとして*Slack*に送信する必要があります。*Slack* は、*webhook* を利用して単純なボットを書く簡単な方法を提供します。着信webhookは、通常の*HTTP*リクエストを使用してデータを送信するURLをアプリケーションに提供します。*JSON* リクエスト本文の内容はぼっとメッセージとしてチャンネルに投稿されます。
 
-まず、https://slack.com/にアクセスし、画面の一番上にある「新しいチームを作成」リンクをクリックして、*Slack*上に新しいチームを作成します。
+まず、https://slack.com/にアクセスし、画面の一番上にある「新しいチームを作成」リンクをクリックして、*Slack* 上に新しいチームを作成します。
 
 指示に従ってチームを作成してください:
 あなたの`メールアドレス`を入力し、`次へ`ボタンをクリックしてください。
 メールで送信した`確認コード`を入力してください。
 あなたの`名前`、`名字`、`ユーザ名`を入力して、`パスワード設定へ進む`ボタンをクリックします。
 `パスワード`を設定し、`チーム情報設定へ進む`ボタンをクリックしてください。
-`関心のあるグループ`のようなオプションを選択して*Slack*を使用する物を指定し、`グループ名設定に進む`ボタンをクリックします。
+`関心のあるグループ`のようなオプションを選択して *Slack* を使用する物を指定し、`グループ名設定に進む`ボタンをクリックします。
 任意の`グループ名`を入力し、`チームURL指定へ進む`ボタンをクリックします。
 任意の`チームURL`を入力し、`チームの作成`ボタンをクリックします。
 `スキップ`ボタンをクリックして招待状を送信するプロセスをスキップし、`Slackを探索`ボタンをクリックして開始してください。
@@ -1237,9 +1241,9 @@ $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 画面左側の`チャンネル`という文字の隣にある小さな`+`アイコンをクリックします
 そして、あなたのチャンネルに`weather`という名前をつけて、`チャンネルを作成する`ボタンをクリックするだけです。
 
-*Slack*が設定できました。
+*Slack* が設定できました。
 
-これらの*HTTP*リクエストの送信を行う別のアクション(マイクロサービス)を書くことが出来ましたが、既にご存知のように、OpenWhiskには、多くのサードパーティ製システムのインテグレーション(パッケージ提供)が付属しています。
+これらの *HTTP* リクエストの送信を行う別のアクション(マイクロサービス)を書くことが出来ましたが、既にご存知のように、OpenWhiskには、多くのサードパーティ製システムのインテグレーション(パッケージ提供)が付属しています。
 
 利用可能なパッケージをもう一度見直してみましょう:
 
@@ -1351,7 +1355,7 @@ $ bx wsk action update location_forecast --web true
 ここでの問題は、ボットが予報に必要な場所をどのようにして知ることができるかです。
 At this point the question is how we can ask the bot for forecasts about a location?
 
-*Slack*は、チャンネルメッセージにキーワードが現れたときに*JSON*メッセージを外部のURLにポストする発信webhookを提供します。あなたのチャンネルに新しい発信Webhookを設定すると、ユーザーは`wetaher: london`という事でボットに応答させることができます。d.
+*Slack* は、チャンネルメッセージにキーワードが現れたときに*JSON*メッセージを外部のURLにポストする発信webhookを提供します。あなたのチャンネルに新しい発信Webhookを設定すると、ユーザーは`wetaher: london`という事でボットに応答させることができます。d.
 
 したがって、定義されたトリガーワードで始まるメッセージが以前に作成した`weather`チャンネル経由で送信されると、アクションが適切に呼び出されていることを確認する必要があります。
 
