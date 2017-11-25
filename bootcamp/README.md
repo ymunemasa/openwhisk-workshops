@@ -2,18 +2,18 @@
 
 - [Preface](#preface)
 - [Serverless Computing](#serverless-computing)
-- [Prepare your engines!](#prepare-your-engines-)
-- [Start your engines!](#start-your-engines-)
-  * [Actions](#actions)
-    + [Creating and invoking JavaScript actions](#creating-and-invoking-javascript-actions)
-    + [Creating and invoking asynchronous actions](#creating-and-invoking-asynchronous-actions)
-    + [Passing parameters to actions](#passing-parameters-to-actions)
-    + [Setting default parameters](#setting-default-parameters)
-    + [Using actions to call an external API](#using-actions-to-call-an-external-api)
-    + [Working with packages and sequencing actions](#working-with-packages-and-sequencing-actions)
-  * [Triggers and rules](#triggers-and-rules)
-  * [Using rules to associate triggers and actions](#using-rules-to-associate-triggers-and-actions)
-  * [Uploading dependencies](#uploading-dependencies)
+- [環境の準備](#prepare-your-engines-)
+- [サーバーレスをはじめよう!](#start-your-engines-)
+  * [アクション](#actions)
+    + [JavaScriptのアクションの作成と実行](#creating-and-invoking-javascript-actions)
+    + [非同期型のアクションの作成と呼び出し](#creating-and-invoking-asynchronous-actions)
+    + [アクションにパラメータを引き渡す](#passing-parameters-to-actions)
+    + [デフォルトのパラメータを設定する](#setting-default-parameters)
+    + [外部APIの呼び出しにアクションを用いる](#using-actions-to-call-an-external-api)
+    + [パッケージを用いて複数のアクションを連続実行する](#working-with-packages-and-sequencing-actions)
+  * [トリガーとルール](#triggers-and-rules)
+  * [ルールによるトリガーとアクションの連携](#using-rules-to-associate-triggers-and-actions)
+  * [依存性(dependencies)のアップロード](#uploading-dependencies)
 - [さらに深い理解を求めて](#boost-your-engines-)
   * [IBM Cloud Functions UIを利用する](#getting-started-with-the-openwhisk-ui)
   * [アクション](#actions-1)
@@ -160,7 +160,7 @@ IBM Cloud Functionsの利用のはじめの一歩:
 
 ### JavaScriptのアクションの作成と実行
 
-このアクションは簡単な *JavaScript* で構成され、*JSON* を読み込み、返します。
+このアクションは簡単な *JavaScript* で構成され、*JSON* オブジェクトを返します。
 
 まず、任意のエディターを開き(例： *Atom* エディター https://atom.io/)、`hello.js`というファイルを作成して以下のコードを入力します。
 
@@ -187,9 +187,7 @@ $ bx wsk action list
 hello                                  private nodejs:6
 </pre>
 
-アクションを実行するには```bx wsk action invoke```コマンドを使います。 *ブロッキング* (i.e.*同期*) の実行はアクションが完遂され結果を返されるまで待機されます。その設定には```-blocking```オプション(または```-b```)を利用します。
-To run an action use the ```bx wsk action invoke``` command.
-A *blocking* (i.e. *synchronous*) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
+アクションを実行するには```bx wsk action invoke```コマンドを使います。 *ブロッキング* (i.e.*同期*) の実行はアクションが完遂され結果を返されるまで待機されます。その設定には```--blocking```オプション(または```-b```)を利用します。
 
 <pre>
 $ bx wsk action invoke --blocking hello
@@ -255,7 +253,7 @@ entities in namespace: <b>default</b>
 <b>rules</b>
 </pre>
 
-### 非同期型のアクションを作成・実行する
+### 非同期型のアクションの作成と呼び出し
 
 *非同期* で実行される *JavaScript* 関数は`main`関数が返されたあとにアクティベーションを返す必要があります。これは`Promise`を返すことで遂行することができます。
 
@@ -654,7 +652,7 @@ IBM　Cloud Functions UIは次のセクションを含みます。
    `マイ・ルール`セクションにはあなたが作成したルールがリスト化されています。
    ルールをクリックすればモデルがビジュアルモデラーへとロードされます。
    ルールにカーソルをかざせばゴミ箱マークが出てきてルールを削除することができます。
-   この時点で最低でもこれまでに作成した`myRule`ルールを確認することができるでしょう。
+   この時点で最低でもこれまでに作成した`myRule`を確認することができるでしょう。
 
 4. `マイ・トリガー`  
    `マイ・トリガー`セクションにはあなたが作成したトリガーがリスト化されています。
@@ -668,7 +666,7 @@ IBM　Cloud Functions UIは次のセクションを含みます。
 次に、任意の名前(例：`helloUI`)を「`アクション名`」のボックスの中に入力しましょう。
 他の項目はそのままにし、画面上の「`作成`」ボタンをクリックします。
 
-オプションをいじらなくても、`languages`や`memory quota`・`time limit`などを編集したいと思うかもしれません。そういったときは`Learn more`リンクをクリックしてより詳細な情報を取得しお好きに設定を変更して構いません。
+オプションをいじらなくても、`言語`や`メモリー割り当て量`・`時間設定`などを編集したいと思うかもしれません。そういったときは`詳細はこちら`リンクをクリックしてより詳細な情報を取得しお好きに設定を変更して構いません。
 
 以下のコードをエディターにコピーして既存で書かれたコードの上に上書きしてください。
 
@@ -685,7 +683,6 @@ function main() {
 アクションはパラメータの引渡しを必要としていませんので、*JSON* インプットを明示する必要はありません。
 
 下の結果を確認できるはずです。
-You should see the following result:
 
 <pre>
 {
