@@ -160,7 +160,7 @@ IBM Cloud Functionsの利用のはじめの一歩:
 
 ### JavaScriptのアクションの作成と実行
 
-このアクションは簡単な *JavaScript* で構成され、*JSON* を読み込み、返します。
+このアクションは簡単な *JavaScript* で構成され、*JSON* オブジェクトを返します。
 
 まず、任意のエディターを開き(例： *Atom* エディター https://atom.io/)、`hello.js`というファイルを作成して以下のコードを入力します。
 
@@ -187,7 +187,7 @@ $ bx wsk action list
 hello                                  private nodejs:6
 </pre>
 
-アクションを実行するには```bx wsk action invoke```コマンドを使います。 *ブロッキング* (i.e.*同期*) の実行はアクションが完遂され結果を返されるまで待機されます。その設定には```-blocking```オプション(または```-b```)を利用します。
+アクションを実行するには```bx wsk action invoke```コマンドを使います。 *ブロッキング* (i.e.*同期*) の実行はアクションが完遂され結果を返されるまで待機されます。その設定には```--blocking```オプション(または```-b```)を利用します。
 To run an action use the ```bx wsk action invoke``` command.
 A *blocking* (i.e. *synchronous*) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
 
