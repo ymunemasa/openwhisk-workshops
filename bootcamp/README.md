@@ -3,30 +3,30 @@
 - [Preface](#preface)
 - [Serverless Computing](#serverless-computing)
 - [環境の準備](#prepare-your-engines-)
-- [サーバーレスをはじめよう!](#start-your-engines-)
-  * [アクション](#actions)
-    + [JavaScriptのアクションの作成と実行](#creating-and-invoking-javascript-actions)
-    + [非同期型のアクションの作成と呼び出し](#creating-and-invoking-asynchronous-actions)
-    + [アクションにパラメータを引き渡す](#passing-parameters-to-actions)
-    + [デフォルトのパラメータを設定する](#setting-default-parameters)
-    + [外部APIの呼び出しにアクションを用いる](#using-actions-to-call-an-external-api)
-    + [パッケージを用いて複数のアクションを連続実行する](#working-with-packages-and-sequencing-actions)
-  * [トリガーとルール](#triggers-and-rules)
-  * [ルールによるトリガーとアクションの連携](#using-rules-to-associate-triggers-and-actions)
-  * [依存性(dependencies)のアップロード](#uploading-dependencies)
-- [さらに深い理解を求めて](#boost-your-engines-)
-  * [IBM Cloud Functions UIを利用する](#getting-started-with-the-openwhisk-ui)
-  * [アクション](#actions-1)
-    + [Rest形式でアクションを呼び出す](#invoking-actions-via-rest-calls)
-    + [web actionsを通してアクションを呼び出す](#invoking-actions-via-web-actions)
-      - [web actionによるレスポンス](#web-action-responses)
-    + [アクションの定期実行](#invoking-actions-periodically)
-  * [ログ](#logging)
-  * [パッケージの活用](#working-with-packages)
-    + [アクションのシーケンス化](#sequencing-actions)
-  * [トリガー](#triggers)
-  * [ルール](#rules)
-  * [モニタリング](#monitoring)
+- [サーバーレスをはじめよう!](#サーバーレスをはじめよう)
+  * [アクション](#アクション)
+    + [JavaScriptのアクションの作成と実行](#javascriptのアクションの作成と実行)
+    + [非同期型のアクションの作成と呼び出し](#非同期型のアクションの作成と呼び出し)
+    + [アクションにパラメータを引き渡す](#アクションにパラメータを引き渡す)
+    + [デフォルトのパラメータを設定する](#デフォルトのパラメータを設定する)
+    + [外部APIの呼び出しにアクションを用いる](#外部APIの呼び出しにアクションを用いる)
+    + [パッケージを用いて複数のアクションを連続実行する](#パッケージを用いて複数のアクションを連続実行する)
+  * [トリガーとルール](#トリガーとルール)
+  * [ルールによるトリガーとアクションの連携](#ルールによるトリガーとアクションの連携)
+  * [依存性(dependencies)のアップロード](#依存性dependenciesのアップロード)
+- [さらに深い理解を求めて](#さらに深い理解を求めて)
+  * [IBM Cloud Functions UIを利用する](#ibm-cloud-functions-uiを利用する)
+  * [アクション](#アクション-1)
+    + [Rest形式でアクションを呼び出す](#rest形式でアクションを呼び出す)
+    + [web actionsを通してアクションを呼び出す](#web-actionsを通してアクションを呼び出す)
+      - [web actionによるレスポンス](#web-actionによるレスポンス)
+    + [アクションの定期実行](#アクションの定期実行)
+  * [ログ](#ログ)
+  * [パッケージの活用](#パッケージの活用)
+    + [アクションのシーケンス化](#アクションのシーケンス化)
+  * [トリガー](#トリガー)
+  * [ルール](#ルール)
+  * [モニタリング](#モニタリング)
 - [Build a weather engine!](#build-a-weather-engine-)
   * [Address to locations service](#address-to-locations-service)
   * [Forecast from location service](#forecast-from-location-service)
@@ -35,19 +35,19 @@
   * [Bot forecasts](#bot-forecasts)
   * [Connecting to triggers](#connecting-to-triggers)
   * [Morning forecasts](#morning-forecasts)
-- [Build a serverless microservice backend!](#build-a-serverless-microservice-backend-)
-  * [Your first API](#your-first-api)
-    + [Mapping actions to endpoints](#mapping-actions-to-endpoints)
-  * [The Serverless Book Management Application](#the-serverless-book-management-application)
-    + [Creating a Cloudant Instance](#creating-a-cloudant-instance)
-    + [Creating a Database](#creating-a-database)
-  * [Expose your weather services](#expose-your-weather-services)
-- [Composing more complex serverless applications](#composing-more-complex-serverless-applications)
-  * [Getting started](#getting-started)
-  * [Your first Composition](#your-first-composition)
-  * [More Compositions](#more-compositions)
-  * [Nesting and data-forwarding](#nesting-and-data-forwarding)
-  * [Inline coding](#inline-coding)
+- [サーバーレスなマイクロサービスバックエンドを構築する](#サーバーレスなマイクロサービスバックエンドを構築する)
+  * [はじめてのAPI](#はじめてのapi)
+    + [エンドポイントにアクションをマッピングする](#エンドポイントにアクションをマッピングする)
+  * [サーバレス式図書管理アプリケーション](#サーバレス式図書管理アプリケーション)
+    + [Cloudantのインスタンスの作成](#cloudantのインスタンスの作成)
+    + [データベースを作成する](#データベースを作成する)
+  * [気象サービスの出力](#気象サービスの出力)
+- [より複雑なサーバレスアプリケーションを構成する](#より複雑なサーバレスアプリケーションを構成する)
+  * [それでは始めよう](#それでは始めよう)
+  * [はじめてのComposition](#はじめてのcomposition)
+  * [コンポジションのさらなる探求](#コンポジションのさらなる探求)
+  * [ネスティングとデータ転送](#ネスティングとデータ転送)
+  * [インラインコーディング](#インラインコーディング)
 - [IBM App Connect & Message Hub](#ibm-app-connect---message-hub)
 - [Special fuel for your engine!](#special-fuel-for-your-engine-)
   * [Developing with VS Code](#developing-with-vs-code)
@@ -1422,28 +1422,29 @@ $ bx wsk rule disable regular_forecast_rule
 <b>ok:</b> rule <b>regular_forecast_rule</b> is <b>inactive</b>
 </pre>
 
-# Build a serverless microservice backend!
+# サーバーレスなマイクロサービスバックエンドを構築する
 
-Actions can be seen as flexible and independently deployable microservices they are perfectly suited to build up entirely serverless microservice backends that expose functions via simply *APIs* (Application Programming Interfaces).
+アクションがいかに柔軟性を持ち独立的にデプロイ可能なマイクロサービスであるかを実感していることでしょう。アクションは機能を *API* (Application Programming Interface)機能を出力するとして完全にサーバーレスなマイクロサービスバックエンドの構築に最適です。
 
-In this context APIs are the digital glue that links services, applications, sensors and mobile devices to create compelling customer experiences and help businesses tap into new market opportunities. They allow you to bring new digital services to market, open revenue channels and exceed customer expectations.
+ここでの文章ではAPIは、目を離せないような顧客体験を産み、新しい市場機会に参入するための、サービスやアプリケーションやセンサーやモバイルデバイスを結び合せるデジタルな接着剤なのです。APIにより、市場に新しいデジタルサービスをもたらし、利益のチャネルを開き、顧客の期待を高めることができます。
 
-OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as *RESTful* endpoints. You can assign actions to specific endpoints, and even have verbs (`GET`, `PUT`, `POST`, `DELETE`) from the same endpoint assigned to different actions.
+IBM Cloud FunctionsのAPIゲートウェイインテグレーションは、アクションを *RESTful* エンドポイントとして簡単に出力するためのIBM Cloud Funtionsの新しい特色である。アクションを任意のエンドポイントに振り分け、`GET`・`PUT`・`POST`・`DELETE`といった動作を他のアクションに振り分けた同じエンドポイントから実行することもできる。
 
-There are two different approaches to expose your actions with the API gateway:
-* Assigning API endpoint/verb combinations to specific actions individually
-* Using a *Swagger* config file to map API endpoints to actions
+APIゲートウェイを用いてアクションを出力するには2つの異なる方法が存在する。
+* APIのエンドポイント/動作の組み合わせを任意のアクションに独立して振り分ける。
+* アクションにAPIエンドポイントを振り分けるのに *Swagger* 設定ファイルを用いる。
 
-You can define your APIs using our CLI or using our UI – in the following we will make use of both.
+CLIまたはUIを用いてAPIを定義することができます。この後の説明では両方の方法を説明します。
 
-Notice that actions exposed via OpenWhisk's API Gateway integration are currently treated like web actions; hence once can make use of the properties `headers`, `status`, or `body` as seen before.
+IBM Cloud FunctionsのAPIゲートウェイインテグレーションを用いたアクションの出力は現時点ではweb actionsのように扱われている。そのため、先に確認したように`ヘッダー`・`ステータス`・`ボディ`といったプロパティを利用することができる。
 
-## Your first API
+## はじめてのAPI
 
-Let's examine how to expose an action able to generate Fibonacci numbers as a *REST* API.
+*REST* APIとしてフィボナッチ数列を作成するアクションを出力する方法を探索してみましょう。
 
-Therefore, let's first have a look at the action itself:
-It's a relatively simple action that generates numbers in a Fibonacci sequence, where every number after the first two is the sum of the two preceding values. When invoking this action from the command line, you specify a `num` parameter (for the n-th place in the sequence), and it will return the value, the complete sequence, and the number of recursive invocations of the Fibonacci method:
+というわけで、まずはアクションそのものについて見ていきましょう。
+フィボナッチ数列に従って、前の2つの数字を足し合わせたものが次の数になるという数字の生成は比較的単純なものです。
+コマンドラインからアクションを呼び出して、(数列のn番目の値のための)`num`パラメータを設定すると、フィボナッチ数列の帰納的な呼び出しにメソッドに従ってn項目の値と初項からn項目までの数列とフィボナッチメソッドを回帰的に呼び出した回数を返します。
 
 ```javascript
 var sequence = [1];
@@ -1481,7 +1482,7 @@ function fibonacci(num) {
 }
 ```
 
-Next, let's deploy and invoke the action:
+次に、アクションをデプロイし呼び出しましょう。
 
 <pre>
 $ bx wsk action create fibonacci fibonacci.js
@@ -1494,26 +1495,26 @@ $ bx wsk action invoke fibonacci -p num 5 -b -r
 }
 </pre>
 
-### Mapping actions to endpoints
+### エンドポイントにアクションをマッピングする
 
-Now, let's examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an `API path`, a `verb` (`GET`, `POST`, `PUT`, `DELETE`), and the `action`.
+それではどのようにアクションがAPIのエンドポイント/動作に関連づいているかを学んでいきましょう。IBM Cloud Functions CLIを用いる際には、`APIパス`・`動作`(`GET`・`POST`・`PUT`・`DELETE`)そして`アクション`を設定しなければなりません。
 
-Notice that you may have to issue the following command and select the proper namespace before able to proceed:
+下記のコマンドをnamespaceを適当なものに直した上で実行してください。
 
 <pre>
 $ bx login -a api.ng.bluemix.net -o &lt;organization&gt; -s &lt;namespace&gt;
 </pre>
 
-If you are wondering what does the properties above mean, copy the full command from this link: https://console.bluemix.net/openwhisk/learn/cli
+上のプロパティの意味がわからないようであれば、次のリンクから、コマンドをフルコピーしてください。 https://console.bluemix.net/openwhisk/learn/cli
 
-Now, we need to enable the action as web action:
+さて、アクションをweb actionとして実行しましょう。
 
 <pre>
 $ bx wsk action update fibonacci --web true
 <b>ok:</b> updated action <b>fibonacci</b>
 </pre>
 
-Next, let's use the API path `/fibonacci`, and the verb `GET` to point to the action `fibonacci`:
+次に、APIパス`/fibonacci`を用いて、`fibonacci`アクションを`GET`しましょう。
 
 <pre>
 $ bx wsk api create /fibonacci get fibonacci
@@ -1521,38 +1522,38 @@ $ bx wsk api create /fibonacci get fibonacci
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/fibonacci
 </pre>
 
-So, let's try it out:
+さて、実行してみましょう。
 
 <pre>
 $ curl --request GET https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/fibonacci?num=10
 n: 10, value: 89, sequence: 1,1,2,3,5,8,13,21,34,55,89, invocations: 19
 </pre>
 
-Notice that parameters that are passed via the query string will be available in the `params` object passed into the actions' `main` function.
+クエリ文字列を通して引き渡されたパラメータは、アクションの`main`関数へと引き渡された`params`オブジェクトで利用できます。
 
-## The Serverless Book Management Application
+## サーバレス式図書管理アプリケーション
 
-Now let's do something a bit more powerful: Let's say you want to expose a set of actions for managing books you have read etc. Therefore, you need to implement a couple of actions forming a serverless microservices backend for creating, reading, updating, and deleting books.
+それではもう少し難易度をあげたものに挑戦しましょう。あなたが読むなどした図書を管理するアクションのセットを出力するなんていかがでしょう？このアプリには、図書を新規登録し、読み、更新し、削除するためのサーバーレスマイクロサービスバックエンドを構成するアクションの実装が必要です。
 
-In the following we strongly recommend to use a *REST* client like *Insomnia*
-(https://insomnia.rest/) to invoke the API endpoints that will be defined – otherwise you may get annoyed by escaping efforts. However, if you decide to use `curl` or another client, make sure you pass over the `application/json` header.
+ここからは、いささか複雑になりますので *Insomnia* のような *REST* クライアント (https://insomnia.rest/)を使いこれから定義するAPIエンドポイントを呼び出すことを強く推奨します。
+しかし、もしあなたが、`curl` など他のクライアントを使うことにしたのならば、必ず`application/json`ヘッダーを除外してください。
 
-### Creating a Cloudant Instance
+### Cloudantインスタンスの作成
 
-Let's assume you want to store the books in *Cloudant* as this would make things very easy as OpenWhisk already provides you with a *Cloudant* package that allows you to work with *Cloudant* without the need to write code.
+さて、図書を貯蓄するのには、IBM Cloud Functionsによって提供済の *Cloudant* パッケージを使いコードを書く手間を省きましょう。
 
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu on the left-side select `Data & Analytics`.  
-Click `Cloudant NoSQL DB`.  
-As service name specify `bookStore`, leave everything else as-is and click the `Create` button.
+IBM Cloud Functionsを開き、画面の右上部にある`カタログ` を開きましょう(`パブリックパッケージの参照`ではありません)
+左部のメニューから`データ＆分析`を選択します。
+`Cloudant NoSQL DB`をクリックします。
+サービス名は`bookStore`とします。他はそのままにして、`作成`ボタンをクリックします。
 
-Once the instance has been created switch to the `Service Credentials` tab, create new credentials by clicking the `New credential` link and click the `View Credentials` link. You will need the `username`, `password` and `host` shown there throughout the rest of this chapter, hence leave this browser tab open.
+インスタンスが作成されたら、`サービス資格情報`のタブへと移動し、`新規資格情報`リンクそクリックして新しい資格情報を作成した後、`資格情報の表示`リンクをクリックします。この後ここに書かれた`username`・'password'・'host'の情報を利用しますので、このブラウザタブはこのまま開いたまま置いておきましょう。
 
-### Creating a Database
+### データベースを作成する
 
-Now that you have created a *Cloudant* instance, let's create a database for storing the books in.
+*Cloudant* インスタンスを作成しましたね。それでは図書を納めるためのデータベースを作成していきましょう。
 
-OpenWhisk can automatically create package bindings for your (Bluemix) *Cloudant service* instances:
+IBM Cloud Functionsでは自動的に(IBM Cloud上の) *Cloudantサービス* インスタンスをバインドしたパッケージを作成します。
 
 <pre>
 $ bx wsk package refresh
@@ -1562,7 +1563,8 @@ Bluemix_bookStore_Credentials-1
 [...]
 </pre>
 
-The refresh automatically creates a package binding for the *Cloudant service* instance that you created. To verify this:
+更新後自動的にあなたが作成した *Cloudantサービス* インスタンスのパッケージバインディングが作成されます。
+これを検証するにはー
 
 <pre>
 $ bx wsk package list
@@ -1571,7 +1573,7 @@ $ bx wsk package list
 [...]
 </pre>
 
-Once again, to reveal the list of entities in the `/whisk.system/cloudant` package run the following command:
+`/whisk.system/cloudant`パッケージに入っているエンティティのリストを表示するには下記のコマンドを使います。
 
 <pre>
 $ bx wsk package get --summary Bluemix_bookStore_Credentials-1
@@ -1583,40 +1585,40 @@ $ bx wsk package get --summary Bluemix_bookStore_Credentials-1
 [...]
 </pre>
 
-As before, to avoid the need to pass in the same parameters to the package's actions every time, let's bind certain parameters:
+パッケージのアクションに毎回同じパラメータを引き渡す手間を避けるために、パラメータをバインドしてしまいましょう。
 
 <pre>
 $ bx wsk package bind /whisk.system/cloudant myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt;
 <b>ok:</b> created binding <b>myBookStore</b>
 </pre>
 
-One of the actions available is called `create-database`.
-Let's use that one to create our database:
+すでに使えるアクションに`create-database`というものがあります。
+これを使ってデータベースを作りましょう。
 
 <pre>
 $ bx wsk action invoke myBookStore/create-database -p dbname books
 <b>ok:</b> invoked <b>/_/myBookStore/create-database</b> with id <b>3f67a23daa8b44efa35725fc22585f9</b>
 </pre>
 
-Now, we could easily store books into this database using the above package's `write` action. Alternatively, we could first map an API endpoint to this and other useful actions part of the package.
+これで、上のパッケージの`write`アクションを使って図書を簡単に貯蔵できます。代わりに、APIエンドポイントをここやパッケージの中の他の有用なアクションに配置することもできます。
 
-Before doing so let's update the binding so that we do not even need to pass in the `dbname` anymore:
+それをする前に、バインドをアップデートして、`dbname`を引き渡ししなくていいようにしておきましょう。
 
 <pre>
 $ bx wsk package update myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -p dbname books
 <b>ok:</b> updated package <b>myBookStore</b>
 </pre>
 
-Before mapping our actions, let's create a `query index` for the field `name` so we can query books by name later on:
+アクションのマッピングの前に、`query index`を`name`フィールドに作成して、あとで書名で図書を検索できるようにしておきましょう。
 
 <pre>
 $ bx wsk action invoke myBookStore/create-query-index -p index "{\"index\": {},\"type\":\"text\"}" --blocking
 <b>ok:</b> invoked <b>/_/myBookStore/create-query-index</b> with id <b>4g67a23daa8b44efa35725fc22585f0</b>
 </pre>
 
-As we currently do not allow package bound actions to be enabled as web actions and as we, at the same time, require an action to be a web action in order to be able to expose it via our API Gateway we have to perform a little trick: We have to implement a simply proxy action that can be enabled as web action and simply calls the package bound action holding all the previously defined parameters using sequencing. But this is not a trick only, executing such proxy actions before and after the actual action is often even required: The action supposed to be executed before the actual action often has to take care of things like authentication while the one supposed to be executed after the actual action often has to perform data transformations.
+現時点ではパッケージをweb actionとして使えるようにアクションをパッケージにバインドしないのですが、それと同時にAPIゲートウェイを通してアクションをweb actionとして出力する必要があるので、ここでちょっとした工夫が必要です。web actionとして使えるアクションであり、シーケンスを使ってそれまでに定義されたパラメータを全て抱えたアクションをバインドしたパッケージを呼び出すことができる、簡単なプロキシアクションを実装します。これは単なる工夫ではないのです。実際のアクションの前後にこのようなプロキシアクションを実行するということはしばしば必要となることなのです。実際のアクションを実行する前に実行したほうが良いアクションに関しては、認証など、注意して置いたほうが良いものがあることがあります。一方、実際のアクションの後に実行されるアクションに関しては、データの移行が必要になることがあります。
 
-Hence, create an action named `proxy` like this:
+それでは、以下のようにして`proxy`というアクションを作成してみましょう。
 
 ```javascript
 function main(params) {
@@ -1624,7 +1626,7 @@ function main(params) {
 }
 ```
 
-Next, we create 3 sequences and enable them as web actions:
+次に3つのシークエンスを作成し、web actionとして機能するようにしましょう。
 
 <pre>
 $ bx wsk action create endpoint_get --sequence proxy,myBookStore/exec-query-find --web true
@@ -1637,7 +1639,7 @@ $ bx wsk action create endpoint_delete --sequence proxy,myBookStore/delete-docum
 <b>ok:</b> created action <b>endpoint_delete</b>
 </pre>
 
-Next, let's map API endpoints to actions:
+次に、APIエンドポイントをアクションに配置しましょう。
 
 <pre>
 $ bx wsk api create /books GET endpoint_get
@@ -1653,10 +1655,10 @@ $ bx wsk api create /books DELETE endpoint_delete
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
 </pre>
 
-Now, let's store some books.
-To do so use your *REST* client to submit a `POST` against the endpoint you have created prior.
+それでは図書を貯蔵しましょう。
+*REST* クライアントを用いて先に作ったエンドポイントに`POST`しましょう。
 
-Make sure to hand-over the following *JSON* data:
+下記の *JSON* データを必ず引き渡しましょう。
 
 ```json
 {
@@ -1666,7 +1668,7 @@ Make sure to hand-over the following *JSON* data:
 }
 ```
 
-Output:
+出力結果:
 
 ```json
 {
@@ -1676,7 +1678,7 @@ Output:
 }
 ```
 
-And then:
+そして:
 
 ```json
 {
@@ -1686,7 +1688,7 @@ And then:
 }
 ```
 
-Output:
+出力結果:
 
 ```json
 {
@@ -1696,10 +1698,10 @@ Output:
 }
 ```
 
-Next, let's query all books.
-To do so use your *REST* client to submit a `GET` against the endpoint you have created prior.
+次に全ての本を検索しましょう。
+*REST* クライアントを使って、先に作成したエンドポイントに`GET`しましょう。
 
-Hand-over the following query parameter to define the *selector*:
+*selector* を定義するために以下のクエリパラメータを引き渡します。
 
 ```json
 {
@@ -1716,7 +1718,7 @@ Hand-over the following query parameter to define the *selector*:
 }
 ```
 
-Output:
+出力結果:
 
 ```json
 {
@@ -1735,10 +1737,10 @@ Output:
 [...]
 ```
 
-Next, let's query a particular book.
-To do so use your *REST* client to submit a `GET` again.
+次に、特定の本のみを検索します。
+もう一度 *REST* クライアントを使って`GET`してください。
 
-Hand-over the following query parameter to define the selector:
+セレクタを定義するために以下のクエリパラメータを引き渡します。
 
 ```json
 {
@@ -1756,7 +1758,7 @@ Hand-over the following query parameter to define the selector:
 ```
 
 
-Output:
+出力結果:
 
 ```json
 {
@@ -1770,61 +1772,62 @@ Output:
 [...]
 ```
 
-Now, let's delete the book we just queried.  
-To do so use your *REST* client to submit a `DELETE`.  
-Hand-over the `docid` and `docrev` of the book you just queried as query parameter.
+それでは探し当てた図書を削除しましょう。
+*REST* クライアントを使って`DELETE`しましょう。
+クエリパラメータとして探した図書の`docid`と`docrev`を引き渡します。
 
-Again, query all books to validate that the book has been properly deleted.
+図書が適切に削除されたか、全ての本を検索して検証しましょう。
 
-## Expose your weather services
 
-Now, let's make the previously implemented weather services (functions) accessible via some simple APIs, too. This time we will use the UI (instead of the CLI) to define these APIs.
+## 気象サービスの出力
 
-Again, open the OpenWhisk UI.  
-Select the `API` tab.  
-Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before).  
-As `API name` specify `weatherAPI`.  
-Leave everything else as-is and click the `Save` button at the bottom of the screen.
+先に実装した気象サービス(関数)もAPIを通してアクセスできるようにしましょう。今回はAPIの定義に(CLIではなく)UIを使っていきます。
 
-On the next screen select the `Definition` tab from the navigation on the left of the screen.  
-Click the `Create Operation` button.  
-As `path` specify `location_to_latlong`.  
-As `action` select the `location_to_latlong` action.  
-Leave everything else as-is and click the `Save` button at the bottom of the screen.  
-Click the `Save` button at the bottom of the screen.
+IBM Cloud Functions UIを開きます。
+`API`タブを選択します。
+`OpenWhisk APIの作成`ボタンをクリックします。(それまでにAPIを作成したことがない場合のみ表示されます。)
+`API名`を`weatherAPI`とします。  
+他の設定をそのままにして、画面下部の`保存`をクリックします。
 
-To find out the `URL` to be used to invoke this operation switch to the `API Explorer` tab.  
-From the list at the left select the `getLocationtolatlong` entry and copy the `GET URL` shown.  
-Open a browser window and append they query parameter `?location=London`.  
-You should be presented the latitude and longitude of London.
+次の画面で画面左部の`定義`タブを選択します。
+`操作の作成`クリックします。
+`パス`を`location_to_latlong`とします。
+`アクション`に`location_to_latlong`アクションを選択します。
+他はそのままにして、画面下部の`保存`をクリックします。
+もう一度、画面下部の`保存`をクリックします。
 
-Switch back to the `Definition` tab and, based on what you just learned, expose the `forecast_from_latlong` action by adding another operation, too.
+この操作を呼び出しするための`URL`を確認するために、`APIエクスプローラー`タブに移ります。
+左部にあるリストから、`getloactiontolatlong`エントリーを選択し、`GET URL`をコピーします。
+ブラウザウィンドウを開き、クエリパラメータ`?location=London`を加えます。
+ロンドンの緯度と軽度が表示されているでしょう。
 
-At this point feel free to play around with other features of our API Gateway integration.
+`定義`タブに戻り、今までの学習を元に、`forecast_from_latlong`アクションを新たな操作を追加することによって出力してください。
 
-# Composing more complex serverless applications
+APIゲートウェイインテグレーションのその他の特色も色々探っていただいても構いませんよ。
 
-So far we have developed application logic only contained in single actions (aka functions) that could have been seen as loosely coupled microservices. They were rather simple and focussed on very specific tasks.
+# より複雑なサーバレスアプリケーションを構成する
 
-While the implementation of such microservices is rather simple, their composition or orchestration is way more complex. That's why frameworks like Kubernetes with additions like Istio have meanwhile become very popular. With IBM's new *Composer*  developers can now build apps that leverage multiple functions and that require more complex, coordinated flows for end to end solutions.
+これまでは、単一のアクション(関数)による、疎結合されたマイクロサービスである、アプリケーションを構築してきました。どちらかというと、単純で具体的なタスクに焦点が当てられたものでした。
 
-Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow.
+そういったマイクロサービスの実装は比較的簡単である一方で、それらの組み合わせや結合はむしろより複雑です。それがKubernetesのようなフレームワークにIstioのようなものを加えて利用するのがとても流行っている理由なのです。IBMの *Composer* ディベロッパを使えば、複数の関数を有し、より複雑でend to endなソリューションのためにコーディネートされたフローを要するアプリケーションを構築することができます。
 
-This means Composer allows to develop more complex serverless applications by combining multiple functions using control logic and state.
+Composerは独立した関数をより大きなアプリケーションに組み込むためのプログラミングモデル(拡張子)である。 *Compositions* という非公式の名前がつけられた *アプリケーション* は自動管理されたコンピュートとメモリを使ってクラウド上で起動しています。Composerは安定した計算機能、管理フローそして潤沢なパターン数のデータフローを可能とします。
 
-Composer has two parts: The first is a library for describing compositions, programmatically. The library is currently available in Node.js. The second is a runtime that executes the composition.
+つまり、Conposerは、管理ロジックとステータスを使って複数の関数を組み合わせ、より複雑なサーバーレスアプリケーションの構築を可能とするのです。
 
-## Getting started
+Composerには2つのパターンがあります。1つはプログラム的に構成状態を表すライブラリです。そのライブラリは現時点ではNode.jsで利用できます。2つ目は構成を実行するランタイムです。
 
-To work with compositions the new functions programming shell (aka `fsh`) is required.
+## それでは始めよう
 
-Hence, let's first install `fsh`:
+Composerを扱うには、新しいfunctions programming shell(fsh)が必要です。
+
+それではまず`fsh`をインストールしましょう。
 
 <pre>
 $ npm install -g @ibm-functions/shell
 </pre>
 
-After the installation, you can find out about `fsh`'s basic capabilities like this:
+インストールが終わったら、このようにして`fsh`を基本的な機能として確認できます。
 
 <pre>
 $ fsh
@@ -1834,26 +1837,26 @@ Usage information:
 [...]
 </pre>
 
-## Your first Composition
+## はじめてのComposition
 
-Compositions can be defined via JSON or, alternatively, using Node code that relies on the Composer SDK. In the following we will focus on the second approach which usually feels more natural for developers.
+compositionはJSONまたはComposer SDK上のNodeコードを使って定義できます。この後の流れでは、開発者にとってはより自然である、先ほどあげたうち2つ目のアプローチに焦点を当てていきます。
 
-Combinators accept either inline Node functions or functions (aka actions) by name. For the latter, you can either use functions' fully qualified or short names.
+CombinatorsはインラインNode関数も指名された関数(アクション)も許容できます。後者に関しては、関数の正式名称も省略名称も使えます。
 
-One of the easiest to understand and out-of-the-box available composition methods is the `if`:
-`composer.if(condition, consequent, alternate)` runs either the `consequent` task if the condition evaluates to true or the `alternate` task if not. The `condition`, `consequent`, and `alternate` tasks are all invoked on the input parameter object for the composition. The output parameter object of the condition task is discarded.
+理解と汎用性を求めた時に思い当たる最も簡単なCompositionメソッドの1つは`if`です。
+`composer.if(condition, consequent, alternate)`は、conditionがtrueの際の`consequent`タスクもそうでない際の`alternate`タスクも稼働できます。`condition`・`consequent`・`alternate`タスクは全てCompositionの入力パラメータオブジェクトに呼び出されます。Conditionタスクの出力パラメータオブジェクトは破棄されます。
 
-Let's first define the composition (and store it in a file named `demo_if.js`):
+それではまずcompositionを定義しましょう(そして`demo_if.js`ファイルにそれを格納しましょう。)。
 
 ```javascript
 composer.if('condition', /* then */ 'success', /* else */ 'failure')
 ```
 
-This composition defines that if the function `condition` evaluates to `true` the function `success` is being executed and the function `failure` otherwise.
+このCompositionは関数の`conditionが`true`ならば関数を`成功`させ、そうでなければ関数は`失敗`にします。
 
-Now, let's define the three aforementioned functions.
+それでは、前述の3つの関数を見ていきましょう。
 
-First, the function `condition` (to be stored in a file named `condition.js`):
+まずは`condition`関数です。(`condition.js`というファイルに貯蔵されています。)
 
 ```javascript
 function main(params) {
@@ -1865,9 +1868,9 @@ function main(params) {
 }
 ```
 
-Notice that returning a JSON object with a key names `value` and a value of type boolean is essential.
+基本的に、キー名が`value`でブーリアンであるJSONオブジェクトを返すようになっています。
 
-Second, the function `success` (to be stored in a file named `success.js`):
+2つ目は`success`関数です。(`success.js`というファイルの中に貯蔵されています。)
 
 ```javascript
 function main() {
@@ -1875,7 +1878,7 @@ function main() {
 }
 ```
 
-Third, the function `failure` (to be stored in a file named `failure.js`):
+3つ目は`failure`関数です。(`failure.js`というファイルに貯蔵されています。)
 
 ```javascript
 function main() {
@@ -1883,7 +1886,7 @@ function main() {
 }
 ```
 
-Next, deploy the three functions:
+次に3つの関数をデプロイします。
 
 <pre>
 $ fsh action create condition condition.js
@@ -1891,15 +1894,15 @@ $ fsh action create success success.js
 $ fsh action create failure failure.js
 </pre>
 
-Next, deploy the actual composition:
+それから、実際のコンポジションをデプロイします。
 
 <pre>
 $ fsh app create demo_if demo_if.js
 </pre>
 
-Before invoking the composition one can visualize it by entering `fsh app preview demo_if.js`.
+コンポジションを呼び出す前に、`fsh app preview demo_if.js`と入力することにより、その確認ができます。
 
-Next, invoke the composition, first without specifing a password which should cause the function `condition` to return `false` and hence the function `failure` to be invoked:
+次にコンポジション呼び出します。まずは、`condition`関数を呼び起こすパスワードを指定せずに`failure`にし、`failure`関数が呼び出されるようにしましょう。
 
 <pre>
 $ fsh app invoke demo_if
@@ -1908,7 +1911,7 @@ $ fsh app invoke demo_if
 }
 </pre>
 
-Finally, invoke the composition again, this time with specifing the password `andreas` which should cause the function `condition` to return `true` and hence the function `success` to be invoked:
+最後に、コンポジションをもう一度呼び出します。今回は`andreas`というパスワードを指定し、`condition`関数を`true`にし、`success`関数が呼び出されるようにしましょう。
 
 <pre>
 $ fsh app invoke demo_if -p password andreas
@@ -1917,20 +1920,20 @@ $ fsh app invoke demo_if -p password andreas
 }
 </pre>
 
-By entering `fsh session get <session id>` one can also visualize the results of an invocation - try it out!
+`fsh session get <session id>`を入力すると、呼び出しの結果を確認できます。やってみましょう！
 
-## More Compositions
+## コンポジションのさらなる探求
 
-Another easy to understand and out-of-the-box available composition methods is the `repeat`:
-`composer.repeat(count, task)` runs `task` `count` times.
+もう1つの簡単に理解でき汎用性のあるコンポジションのメソッドは`repeat`です。
+`composer.repeat(count, task)`により`count`回`task`が実行されます。
 
-Let's first define the composition (and store it in a file named `demo_repeat.js`):
+それではまず、コンポジションを定義します。(そして`demo_repeat.js`という名前のファイルに貯蔵します)
 
 ```javascript
 composer.repeat(5, 'task_repeat')
 ```
 
-Now, let's define the function `task_repeat` (to be stored in a file named `task_repeat.js`):
+さて、`task_repeat`という関数を定義しましょう。（`task_repeat.js`というファイルに貯蔵します。）
 
 ```javascript
 function main(params) {
@@ -1941,16 +1944,16 @@ function main(params) {
 }
 ```
 
-Notice that the output of each invocation serves as input for the next invocation.
+それぞれの呼び出しの出力結果が次の呼び出しを引き起こしています。
 
-Next, deploy the function and composition:
+次に、関数とコンポジションをデプロイします。
 
 <pre>
 $ fsh action create task_repeat task_repeat.js
 $ fsh app create demo_repeat demo_repeat.js
 </pre>
 
-Next, invoke the composition:
+そして、コンポジションを呼び出します。
 
 <pre>
 $ fsh app invoke demo_repeat -p count 10
@@ -1959,16 +1962,16 @@ $ fsh app invoke demo_repeat -p count 10
 }
 </pre>
 
-And finally, another easy to understand and out-of-the-box available composition methods is the `while`:
-`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true.
+さらに最後にもう1つ理解しやすく汎用的なコンポジションメソッド`while`をご紹介します。
+`composer.while(condition, task)`は`condition`がtrueである限り繰り返し`task`を実行します。
 
-Let's first define the composition (and store it in a file named `demo_while.js`):
+それではまずコンポジションを定義しましょう。（そしてそれを`demo_while.js`というファイルに貯蔵します）
 
 ```javascript
 composer.while('condition_while', 'task_while')
 ```
 
-Now, let's define the function `condition_while` (to be stored in a file named `condition_while.js`):
+それから`condition_while`関数を定義しましょう。(`condition_while.js`ファイルに格納します。)
 
 ```javascript
 function main(params) {
@@ -1982,7 +1985,7 @@ function main(params) {
 }
 ```
 
-Next, let's define the function `task_while` (to be stored in a file named `task_while.js`):
+次に、`task_while`関数を定義します。(`task_while.js`ファイルに格納します。)
 
 ```javascript
 function main(params) {
@@ -1993,7 +1996,7 @@ function main(params) {
 }
 ```
 
-Next, deploy the functions and composition:
+そして、関数とコンポジションをデプロイします。
 
 <pre>
 $ fsh action create condition_while condition_while.js
@@ -2001,7 +2004,7 @@ $ fsh action create task_while task_while.js
 $ fsh app create demo_while demo_while.js
 </pre>
 
-Next, invoke the composition:
+できたら、コンポジションを呼び出します。
 
 <pre>
 $ fsh app invoke demo_while -p count 10
@@ -2010,20 +2013,20 @@ $ fsh app invoke demo_while -p count 10
 }
 </pre>
 
-Notice that you may get a different result (count) due to the random number being relevant here.
+おそらく異なる結果（count）が出力されたでしょう。これは今回の場合は数字がランダムで排出されるからです。
 
-Once again, we recommend entering `fsh session get <session id>` again to visualize the results of the invocations.
+`fsh session get <session id>`で呼び出しの結果が確認できますので、ぜひ試してみてほしいと思います。
 
-An overview of all currently available compositions can be found here:
+現在利用できるコンポジションの総覧は下のリンクからご確認ください。
 https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
 
-## Nesting and data-forwarding
+## ネスティングとデータ転送
 
-An important property of combinators is that they can be nested. This encourages modularity and reuse.
+コンビネータの重要な特徴は、それが入れ子になっていることです。これにより、コンビネータはモジュール性と再利用性を持ちます。
 
-Nesting and data-forwarding between nested compositions can best be explained along another example. Let's say you want to chain together two actions. The first action called `reverse` is supposed to reverse any *String* being handed over. The second action called `output` is supposed to dump the original (non-reverted) input *String* as well as the (reverted) *String*.
+ネスティングと入れ子になったコンポジションの間のデータ転送は別の例で説明することができます。もしあなたが2つのアクションを連携しようとしたとしましょう。1つ目のアクションは`reverse`といい、引き渡した *文字列* を元に戻すことができます。2つめのアクション`output`は元の(戻していない)入力 *文字列* を (戻した) *文字列* と同様にダンプします。
 
-The `task_reverse` action (to be stored in `task_reverse.js`) could look as follows:
+(`task_reverse.js`に格納された)`task_reverse`アクションは下のようにして確認できます。
 
 ```javascript
 function main(params) {
@@ -2031,7 +2034,7 @@ function main(params) {
 }
 ```
 
-The `task_output` action (to be stored in `task_output.js`) could look as follows:
+(`task_output.js`に格納された)`task_output`アクションは下記のようにして確認できます。
 
 ```javascript
 function main(params) {
@@ -2039,7 +2042,7 @@ function main(params) {
 }
 ```
 
-The composition to chain both actions together (to be stored in `demo_nesting.js`) could look as follows:
+(`demo_nesting.js`に格納された)2つのアクションを連携するコンポジションは下記のようにして確認できます。
 
 ```javascript
 composer.sequence('task_reverse', 'task_output')
@@ -2064,19 +2067,19 @@ fsh invoke demo_nesting -p input myText -r
 }
 </pre>
 
-It seems as if the sequencing (i.e. the nesting) itself works but the value of the initial input parameter is being lost.
-This is because the output of the `task_reverse` is only the reverted *String*; the initial input *String* gets indeed lost.
-Hence, what we need in addition to the sequencing as some data-forwarding capability.
+シーケンス(i.e. ネスティング)自体が機能しているように思えますが、初期入力パラメータの値は喪失しています。
+それは`task_reverse`の出力結果が戻された *文字列* であるがためです。初期入力 *文字列* は確かに喪失したのです。
+シーケンスに加えて必要なのはデータ転送です。
 
-This is what the `retain` composition is good for: `composer.retain(task[, flag])` runs `task` on the input parameter object producing an object with two fields `params` and `result` such that `params` is the input parameter object of the composition and `result` is the output parameter object of `task`.
+`retain`コンポジションがこの説明に良いのです。`composer.retain(task[, flag])`は、コンポジションの入力パラメータオブジェクト`params`と`task`の出力パラメータオブジェクトの`result`2つを生み出す、入力パラメータオブジェクトに乗った`task`を実行します。
 
-That being said let's change our composition like that:
+それではコンポジションをその形に書き換えてみましょう。
 
 ```javascript
 composer.sequence(composer.retain('task_reverse'), 'task_output')
 ```
 
-Let's change our `task_output` action like that:
+`task_output`もその形に直してみましょう。
 
 ```javascript
 function main(params) {
@@ -2084,17 +2087,17 @@ function main(params) {
 }
 ```
 
-Notice that the "first" `params` refers to the argument being passed to the `main` method.
-The "second" `params` results from the use of the `retain` composition and provides access to the initial `input` as well as the `result` of the invocation of the `task_reverse` action.
+"1つ目の"`params`は`main`メソッドに引き渡される実数に言及しています。
+”2つ目の"`params`は`retain`コンポジションの結果であり、`task_reverse`アクションの呼び出しの`結果`と同様に、最初の `入力`へのアクセスを許します。
 
-Let's update the artifacts:
+それではアーティファクトをアップデートしましょう。
 
 <pre>
 $ fsh action update task_output task_output.js
 $ fsh app update demo_nesting demo_nesting.js
 </pre>
 
-And try again:
+もう一度やってみます。
 
 <pre>
 fsh invoke demo_nesting -p input myText -r
@@ -2103,28 +2106,29 @@ fsh invoke demo_nesting -p input myText -r
 }
 </pre>
 
-Works like a charm.
 
-Once again, we recommend entering `fsh session get <session id>` again to visualize the results of the invocations.
+魔法みたいですね。
 
-## Inline coding
+`fsh session get <session id>`を入力して呼び出しの結果を視覚化すると良いでしょう。
 
-As said before it is not always necessary to define functions' code within separate files.
-Especially simple logic can always be defined inline.
+## インラインコーディング
 
-Let's define a composition (and store it in a file named `demo_inline.js`):
+前にお話ししたように、分かれたファイルの間で関数のコードを定義する必要は常にあるわけではありません。
+特に、簡単なロジックは常にインラインで定義されているものです。
+
+コンポジションを定義してみましょう。(そして`demo_inline.js`ファイルに格納しましょう)
 
 ```javascript
 composer.task(params => ({message: `Hello ${params.name}!`}))
 ```
 
-Then, deploy it:
+そしたらデプロイします。
 
 <pre>
 $ fsh app create demo_inline demo_inline.js
 </pre>
 
-Finally, let's simply invoke it:
+最後に簡単に呼び出します。
 
 <pre>
 fsh invoke demo_inline -p name Andreas -r
@@ -2133,7 +2137,7 @@ fsh invoke demo_inline -p name Andreas -r
 }
 </pre>
 
-To learn more about Composer visit: https://github.com/ibm-functions/composer
+Composerについてもっと学びたかったら次のURLを参考にしてください。: https://github.com/ibm-functions/composer
 
 # IBM App Connect & Message Hub
 
