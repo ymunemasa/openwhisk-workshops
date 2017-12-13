@@ -2048,9 +2048,9 @@ function main(params) {
 composer.sequence('task_reverse', 'task_output')
 ```
 
-The `composer.sequence(task_1, task_2, ...)` composition runs a sequence of tasks (possibly empty). The input parameter object for the composition is the input parameter object of the first task in the sequence. The output parameter object of one task in the sequence is the input parameter object for the next task in the sequence. The output parameter object of the last task in the sequence is the output parameter object for the composition.
+`composer.sequence(task_1, task_2, ...)`というコンポジションは(空の)タスクのシーケンスを実行します。コンポジションの入力パラメータオブジェクトはシーケンスの最初のタスクの入力パラメータオブジェクトでもあります。シーケンスのあるタスクの出力パラメータオブジェクトは、シーケンスの次のタスクの入力パラメータオブジェクトでもあります。シーケンスの最後のタスクの酒強くパラメータオブジェクトはコンポジションの出力パラメータオブジェクトとなります。
 
-Now, let's deploy all artifacts:
+それでは全てのアーティファクトをデプロイしましょう
 
 <pre>
 $ fsh action create task_reverse task_reverse.js
@@ -2058,7 +2058,7 @@ $ fsh action create task_output task_output.js
 $ fsh app create demo_nesting demo_nesting.js
 </pre>
 
-Unfortunately, when invoking the composition we do not get really what we want:
+残念なことにコンポジションを呼び出しても欲しかった結果そのものを手に入れることはできません。
 
 <pre>
 fsh invoke demo_nesting -p input myText -r
@@ -2139,55 +2139,55 @@ fsh invoke demo_inline -p name Andreas -r
 
 Composerについてもっと学びたかったら次のURLを参考にしてください。: https://github.com/ibm-functions/composer
 
-# IBM App Connect & Message Hub
+# IBM App ConnectとMessage Hub
 
-*IBM App Connect* allows you to connect different applications to make your business more efficient. It allows you to set up automation flows to direct how events in one application trigger actions in another. It also allows you to map the information you want to share between them.
+*IBM App Connect* を使えばビジネスを効果的に進めるための異なるアプリケーションをつなぎ合わせることができます。それにより自動化フローがセットアップされ、どのように1つのアプリケーションのイベントが他のアクションを引き起こすかを示します。また、関連し合うアプリケーションで共有したい情報の配置もできます。
 
-*IBM Message Hub* is an *IBM Bluemix* managed *Apache Kafka*, a scalable, high-throughput message bus service for building real-time data pipelines and streaming applications. It allows you to wire together micro-services using open protocols, to connect stream data to analytics to realize powerful insights, to feed event data to multiple applications to react in real time. It allows you to bridge to your on-premise messaging infrastructure to create a hybrid cloud messaging solution.
+*IBM Message Hub* は *IBM Cloud PaaS* によって管理された *Apache Kafka* であり、リアルタイムのデータパイプラインとストリーミングアプリケーションを構築するスケーラブルではいスループットなサービスです。オープンプロトコルを使ったマイクロサービスをつなぎ合わせたり、強力な洞察を実現する分析とデータをつなぎ合わせたり、リアルタイムで処理をする複数のアプリケーションにデータを引き渡したりします。オンプレミスのメッセージングシステムとクラウドシステムの架け橋となり、ハイブリッドクラウドなメッセージングソリューションを構築します。
 
-In the following we will show you can use *App Connect* to post data to a dedicated *Message Hub* topic which then causes an OpenWhisk trigger to fire to invoke an action.
+この後は *App Connect* を使って、専有の *Message Hub* トピックにデータをポストして、アクションを呼び出すためのIBM Cloud Functionsのトリガーを起動する流れを実践します。
 
-First, let's set up a *Message Hub* instance and a topic:
+まず、 *Message Hub* インスタンスとトピックを立ち上げましょう。
+IBM Cloud Functions UI上の画面右上部の`カタログ`リンクをクリックします。(`パブリック・パッケージの参照`ではありません)
+画面左部のメニューにある`アプリケーション・サービス`を選択します。
+`Message Hub`をクリックします。
+設定はそのままにして右下部の`作成`をクリックします。
+`管理`タブに移動し、`+`アイコンをクリックして新しいトピックを作成します。トピック名を`openwhisk`とします。
+設定をそのままにして、`トピックの作成`ボタンをクリックします。
 
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Application Services`.  
-Click `Message Hub`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
-Switch to the `Manage` tab and click the `+` icon to create a new topic. As topic name specify `openwhisk`.  
-Leave all other settings as they are and click the `Create topic` button.
+次に、 *App Connect* インスタンスを立ち上げます。
+新しいブラウザタブを立ち上げます。
+IBM Cloud Functions UI上の画面右上部の`カタログ`リンクをクリックします。(`パブリック・パッケージの参照`ではありません)
+画面左部のメニューにある`インテグレーション`を選択します。
+`App Connect`をクリックします。
+設定をそのままにして、画面右下部の`トピックの作成`ボタンをクリックします。
 
-Second, let's set up an *App Connect* instance:  
-Open a new browser tab.  
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Integrate`.  
-Click `App Connect`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.
+それでは *Salesforce* のテストアカウントにサインアップして、新しいコンタクトが作成されたのと程なくして *App Connect* から *Message Hub* に何かをPOSTさせましょう。(そして、IBM Cloud Functionsのトリガーを起動し、アクションを呼び出しましょう)
 
-Now, sign-up for a *Salesforce* test account as we would like *App Connect* to post something to *Message Hub* (then causing the OpenWhisk trigger to fire and the action to be invoked) as soon as a new contact is being created:
+新しいブラウザタブを開き、https://www.salesforce.com/form/signup/freetrial-sales.jsp にアクセスしてください。  
+右側の欄を埋め、`無料トライアルにサインアップ`ボタンをクリックします。
 
-Open a new browser tab and navigate to https://www.salesforce.com/form/signup/freetrial-sales.jsp  
-Fill out all fields shown on the right-hand side and click the `Start free trial` button.
+*App Connect* インスタンスのブラウザタブに戻ります。(もし閉じてしまっていたら、もう一度`カタログ`をクリックし、画面左部の`ハンバーガ`(三本線)アイコンをクリックし、`ダッシュボード`を選択します。）
+必要であれば、`Launch App Connect`ボタンをクリックし、次に出てくる案内はskipします。
+`New`ボタンをクリックし、`Create an event-driven flow`ボタンを選択します。
+`Salesforce`をクリックし、Contact内の`New Contact`を選択します。
+`Connect`を選択した後、`Connect to Salesforce`ボタンをクリックします。
+ログインしたあと新しいブラウザタブに出てくる`許可`ボタンをクリックします。
+*App Connect* に戻り、フローに`Message Hub`の`Send Message`をクリックして加えます。
+`Connect`ボタンをクリックします。
+*Message Hub* インスタンスを表示しているブラウザタブに戻ります。(もし閉じてしまっていたら、もう一度`カタログ`をクリックし、画面左部の`ハンバーガ`(三本線)アイコンをクリックし、`ダッシュボード`を選択します。）
+`サービス資格情報`タブに移動し、`資格情報の表示`リンクをクリックします。
+表示されている *JSON* をコピーするためのアイコンをクリックします。
+次に、*App Connect* が表示されているブラウザタブに戻り、先ほどコピーした *JSON* を全て`Message Hub Service Credentials`と書かれた欄に貼り付け、`Connect`ボタンをクリックします。
+Topicに`openwhisk`を指定します。
+payloadとして、(入力欄の隣のお助けアイコンをクリックしたあと)インスタンスの`lastname`を選択します。
+最後に、画面右上部の`Exit and switch onボタン`をクリックします。
 
-Navigate back to the browser tab showing your *App Connect* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Apps` and then `Dashboard`).  
-If necessary click the `Launch App Connect` button and skip the dialogs offering initial help.  
-Click the `New` button and select `Create an event-driven flow` button.  
-Click `Salesforce` and `New Contact`.  
-Click the `Connect to Salesforce` button.  
-In the new browser tab appearing click the `Allow` button.  
-Back in the *App Connect* view click `Message Hub` and `Send Message`.  
-Click the `Connect to Message Hub` button.  
-Now, navigate back to the browser tab showing your *Message Hub* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Services` and then `Dashboard`).  
-Switch to the `Service Credentials` tab and click the `View Credentials` link.  
-Click the icon that allows you to copy the entire *JSON* being shown.  
-Next, navigate back to the browser tab showing your *App Connect* instance and paste the entire *JSON* you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.  
-As topic specify `openwhisk`.  
-As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.  
-Finally, click the `Exit and switch on button` at the top right of the screen.  
+それでは先ほど作成した *Message Hub* トピックにPOSTがあったら必ずトリガーが起動するようにしましょう。
 
-Now, let's make sure a trigger fires whenever something is being posted to the *Message Hub* topic we just created:
+IBM Cloud Functions UIの開発タブに移りましょう。
+新しいアクション(`newContact`という名前にしてください)を作成し、下のコードを貼り付けてください。
 
-In the OpenWhisk UI switch to the Develop tab if not already there.  
-Create a new action (name it `newContact`) the way you learned it before containing the following code:
 
 ```javascript
 function main(params) {
@@ -2195,22 +2195,22 @@ function main(params) {
 }
 ```
 
-Click the `Automate this Action` button at the bottom right of the screen to make sure it gets fired by a trigger.  
-Click `Messaging`.  
-Click `New Trigger`.  
-Provide all the details being asked for (which you can get by navigating back to the browser tab showing your *Message Hub* instance and having a look at the service credentials).  
-Click the `Save Configuration` button.  
-Click the `This Looks Good` and the `Save Rule` buttons.  
-Finally, switch to the `Monitor` tab to see what's going on.  
+右下部にある`このアクションを自動化`ボタンをクリックし、トリガーにより起動するようにしてください。
+`Messaging`をクリックします。
+`新規トリガー`をクリックします。
+*Message Hub* インスタンスのサービス資格情報を見て当てはまる情報を入力してください。
+`構成の保存`ボタンをクリックします。
+`これは適切なようです`と`ルールの保存`をクリックします。
+最後に、UIの`モニター`タブに移り起こっていることを確認します。
 
-Navigate back to the browser tab showing the *Salesforce* application.  
-From the main menu click `Contacts`.  
-Click the `New` button at the top right of the screen.  
-Provide at least a `given` and `family name` and click `Save`.  
+*Salesforce* のブラウザタブに戻ります。
+メインメニューの`商談`をクリックします。
+画面右上部の`新規`ボタンをクリックします。
+少なくとも`商談名`と`取引先名`をクリックして`保存`をクリックします。
 
-When navigating back to the OpenWhisk UI monitoring should reveal that the action we just created has been invoked with information about the *Salesforce* contact that has just been created.
+IBM Cloud Functions UIモニターに戻ったら、先ほど作成したアクションが、先ほど作成した *Salesforce* 上の商談の情報を以って呼び出されたことがわかるでしょう。
 
-To summarize, the App Connect flow took care of posting to a dedicated *Message Hub* topic once a new *Salesforce* contact has been created. That caused the OpenWhisk Messaging trigger to fire which caused the associated action to be invoked.
+要約すれば、App Connectフローによって、新規の *Salesforce* 上の商談が作成されたら、専有の *Message Hub* のトピックへPOSTするようになったということです。それにより、IBM Cloud functionsのトリガーが起動しアクションが呼び出されたということなのです。
 
 # Special fuel for your engine!
 
