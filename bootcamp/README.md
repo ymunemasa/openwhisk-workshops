@@ -2484,41 +2484,41 @@ You can learn more about using the *Serverless Framework* here: https://github.c
 
 At this point it may be a good exercise to package together the previously implemented weather services using the *Serverless Framework* – we leave this as a voluntary exercise for you.
 
-# Node-RED and OpenWhisk
+# Node-REDとIBM Cloud Functions
 
-Especially IoT (Internet of Things) applications are often held up as a great use-case for serverless platforms.
+IoTアプリケーションはサーバーレスプラットホームの殊に素晴らしいユースケースになりえます。
 
-Serverless platforms are ideally suited to building solutions for the IoT. IoT applications are inherently event-driven and come with unpredictable traffic patterns. Often, applications involve listening for data from externally connected devices and passing it through to an internally data store after applying some transformations.
+サーバーレスはIoTソリューションを構築するのに実に適切です。IoTアプリケーションは元々イベントドリブン型であり、予想ができないトラフィックパターンを持ちます。IoTではアプリケーションはしばしば接続された外部デバイスからデータを聞き出し、処理をかけた後に内部のデータストアに引き渡します。
 
-In this section, we're going to look at using a popular open-source tool for integrating IoT devices, APIs and online services with OpenWhisk.
+このセクションでは、IoTデバイスやAPIやオンラインサービスをIBM Cloud Functionsと連携するために、有名なオープンソースツールを用います。
 
-*Node-RED* describes itself as a "visual tool for wiring the Internet Of Things". It comes with a browser-based editor that allows you to visually build up "message flows", connecting devices to online APIs and services. Once the message flow has been developed, developers can deploy that flow to the backend service to make it live. *Node-RED* represents devices, online services and APIs as individual "nodes". The tool has a huge community of 3rd nodes for almost every kind of hardware device, APIs and third-party services.
+*Node-RED* は「IoTを結び合せるビジュアルツール」と自身を表現しています。ブラウザベースのエディタで、視覚的に「メッセージフロー」を構築してデバイスとオンラインのAPIやサービスを接続できます。一度メッセージフローが構築されれば、開発者はバックエンドサービスにそのフローをデプロイし起動させることができます。 *Node-RED* はデバイスやオンラインサービスやAPIを個別の「ノード」として表現します。サードパーティによるノードコミュニティが形成されており、ほとんどすべてのハードウェアデバイスやAPIやサードパーティサービスに対応できます。
 
-OpenWhisk recently released nodes for *Node-RED* to represent actions and triggers. These nodes allow to create and invoke those resources through the *Node-RED* runtime. Using *Node-RED* with the OpenWhisk nodes allows you to easily build IoT applications that integrate with a serverless platform.
+IBM Cloud Functionsはアクションやトリガーを起動するための *Node-RED* 向けのノードを提供しています。これらのノードによって *Node-RED* のランタイムを通してリソースを作成したり呼び出したりできます。 *Node-RED* をIBM Cloud Functionsノードと共に使うと、サーバレスプラットフォームと連携されたIoTアプリケーションを簡単に構築できます。
 
-## Installing Node-RED
+## Node-REDのインストール
 
-Let's start by getting *Node-RED* installed locally.
+まずは *Node-RED* ローカル環境にインストールすることから始めましょう。
 
-Notice that *Node-RED* uses the `Node.js` runtime and the `Node Package Manager` to allow developers to install the tool as a command-line utility. If you haven't got Node.js installed locally, please get the environment running first (https://nodejs.org/en/).
+*Node-RED* は開発者がコマンドラインユーティリティとしてツールをインストールするのに`Node.js`ランタイムと`Node Package Manager`を用いています。もしNode.jsをローカル環境にインストールしていなければ、まずは環境を整えることから始めましょう(https://nodejs.org/en/)。
 
-Running this command will install *Node-RED* as a command-line utility available to all users:
+以下のコマンドを実行し *Node-RED* をすべてのユーザーが利用可能なコマンドラインユーティリティとしてインストールしましょう。
 
 <pre>
 $ npm install -g node-red
 </pre>
 
-This command will take a while to install *Node-RED* with all its dependencies. `npm` will generate lots of log messages during this process but this is normal. If the command finishes without an error, we can start to use the application.
+このコマンドを実行して *Node-RED* とそれに全依存物をインストールするにはしばらく時間が必要です。`npm`はこのプロセスの間に多くのログメッセージを生成するでしょうがそれで通常です。エラーなくコマンドが実行終了すれば、このアプリケーションを利用開始できます。
 
-## Starting Node-RED
+## Node-REDの開始
 
-Once *Node-RED* is installed, the tool can be started with the following command:
+*Node-RED* がインストールされれば、以下のコマンドで開始できます。
 
 <pre>
 $ node-red
 </pre>
 
-You should see the following output:
+すると以下のメッセージが出力されます。
 
 <pre>
 Welcome to Node-RED
@@ -2535,172 +2535,173 @@ Welcome to Node-RED
 24 Oct 10:33:01 - [info] Started flows
 </pre>
 
-Once you have started *Node-RED*, the server is running on port 1880.  
-Open a web browser and visit the following URL to open the editor: http://localhost:1880
+*Node-RED* を開始すると、サーバが1880番ポートで起動します。
+ウェブブラウザを開き、次のURLを入力してエディタを開きましょう。http://localhost:1880
 
-*Nodes* are available in the palette on the left-hand side of the screen. Users build "message flows" by dragging the nodes from the left-hand panel and dropping them on the grid. Nodes on the grid can be connected together with "wires" to exchange messages.
+*ノード* は画面左部のパレットにあります。ユーザーは画面左部のノードをドラッグ＆ドロップしてグリッドの上に置いて「メッセージフロー」を構築します。グリッド上のノードは「ワイヤー」で接続されメッセージを交換し合います。
 
-Notice that if you want more documentation for *Node-RED*, the project website has excellent information here: http://nodered.org/docs/
+*Node-RED* に関するドキュメントがもっと欲しければ、プロジェクトのウェブサイトを参照してください。http://nodered.org/docs/
 
-## "Hello World" with Node-RED
+## Node-REDで"Hello World"
 
-Let's start by building a "Hello World" example to get you started:
+それでは”Hello World"サンプルからまずは始めてみましょう。
 
-### Add an Inject node
+### Injectノードの追加
+`Inject`ノードはフローにinjectメッセージを加えます。ノード上のボタンを押すか入力の間隔をセットすることで起動します。
 
-The `Inject` node allows you to inject messages into a flow, either by clicking the button on the node, or setting a time interval between injects.
+パレットからワークスペースにノードを1つドラッグします。
+サイドバーを開き(`Ctrl+Space`またはドロップダウンメニューで開きます)、`情報`タブを選択します。
+新規に追加した`Inject`ノードを選択肢、プロパティ情報やその機能の詳細を確認します。
 
-Drag one onto the workspace from the palette.  
-Next, open the sidebar (`Ctrl-Space`, or via the dropdown menu) and select the `Info` tab.  
-Then, select the newly added `Inject` node to see information about its properties and a description of what it does.
+### Debugノードの追加
 
-### Add a Debug node
+`Debug`ノードはデバッグサイドバーにあらゆるメッセージを表示します。デフォルト状態ではメッセージのペイロードを表示するだけですが、メッセージオブジェクトをすべて表示することも可能です。
 
-The `Debug` node causes any message to be displayed in the debug sidebar. By default, it just displays the payload of the message, but it is possible to display the entire message object.
+パレットからDebugノードを1つワークスペースにドラッグしましょう。
 
-Drag one onto the workspace from the palette.
+### 2つのノードを接続する
 
-### Wire the two together
+`Inject`ノードと`Debug`ノードをその出力ポートと入力ポートをドラッグでつなぐことで接続しましょう。
 
-Connect the `Inject` and `Debug` nodes together by dragging between the output port of one to the input port of the other.
+### デプロイ
 
-### Deploy
+この状態ではノードはエディタ上に存在しているだけなので、これをサーバにデプロイする必要があります。
+`デプロイ`ボタンをクリックします。シンプルでしょう？
 
-At this point, the nodes only exist in the editor and must be deployed to the server.  
-Therefore, click the `Deploy` button - simple as that.
+デバッグサイドバータブを選択し、(Injectノードの左に飛び出ている)`Inject`ボタンをクリックします。サイドバーに数字が出てくるでしょう。デフォルト状態では、`Inject`ノードはペイロードとして1970年1月1日から何ミリ秒経過したかを表示します。ここからはより有用なことに挑戦してみましょう。
 
-With the debug sidebar tab selected, click the (little left rectangle of the) `Inject` button. You should see numbers appear in the sidebar. By default, the `Inject` node uses the number of milliseconds since January 1st, 1970 as its payload. Let's do something more useful with that.
+### Functionノードの追加
 
-### Add a Function node
+`Function`ノードは *JavaScript* 関数を通してメッセージを引き渡します。
 
-The `Function` node allows you to pass each message though a *JavaScript* function.
+`Function`ノードを`Inject`ノードと`Debug`ノードの間に配置し接続します。(キーボード上の`delete`キーを押し)既存のワイヤを削除します。
 
-Wire the `Function` node in between the `Inject` and `Debug` nodes. You may need to delete the existing wire (select it and hit `delete` on the keyboard).
-
-Next, double-click on the `Function` node to bring up the edit dialog.  
-Copy the following code into the function field:
+次に`Function`ノードをダブルクリックして編集ダイアログを開きます。
+次のコードを関数フィールドにコピーします。
 
 ```javascript
 // Create a Date object from the payload
-var date = new Date(params.payload);
+var date = new Date(msg.payload);
 // Change the payload to be a formatted Date string
-params.payload = date.toString();
+msg.payload = date.toString();
 // Return the message so it can be sent on
-return params;
+return msg;
 ```
 
-Next, click `Done` button to close the edit dialog and then click the `Deploy` button.   
-Now, when you click the `Inject` button again, the messages in the sidebar will be more readable time stamps.
+次に`完了`ボタンをクリックして編集ダイアログを閉じ、`デプロイ`ボタンをクリックします。
+もう一度`Inject`ボタンをクリックすれば、スライドバーのメッセージはより読み取りしやすいタイムスタンプになるでしょう。
 
-That example should give you an idea about how to use the editor to connect nodes together to build flows and deploy them to the *Node-RED* runtime.
+この例でどのようにエディタを用いてノードを接続し、フローを構築して *Node-RED* ランタイムにデプロイできるかがわかったでしょう。
 
-Feel free to have a play around with the other nodes in the palette and build more complex flows.
+パレット内の他のノードを自由に使い、より複雑なフローを構築してみましょう。
 
-## Adding Nodes to Node-RED
+## Node-REDにノードを追加
 
-Node-RED has a huge community of external developers who publish nodes for connecting to thousands of 3rd party devices, APIs and online services.
+Node-REDには何千ものサードパーティデバイスやAPIやオンラインサービスと接続するためのノードを発行した外部開発者による巨大コミュニティがあります。
 
-This website catalogues all the available nodes: http://flows.nodered.org/
+このウェブサイトには全てのノードが収蔵されています。http://flows.nodered.org/
 
-Let's look at installing the OpenWhisk nodes into *Node-RED*:  
-If you type `openwhisk` into the search box, we see there are two entities that can be installed.
+IBM Cloud functionsノードを *Node-RED* にインストールしましょう。
+検索バーに`openwhisk`と入力すると、2つのインストール可能なエンティティが表示されます。
 
-We want to install the result named `node-red-node-openwhisk`, which contains the officially supported OpenWhisk nodes for *Node-RED*.
+公式サポートされた *Node-RED* 用のIBM Cloud Functionsノードが入った`node-red-node-openwhisk`をインストールします。
 
-So, if you go back into the *Node-RED* editor and click the menu icon in the top-right of the screen, it presents a menu including the `Manage palette` item.
-Selecting this option will bring up the node installation dialoge in the left-hand panel. This panel shows you the list of installed nodes and also allows you to install extra nodes. We're going to use this to install the OpenWhisk nodes.
+*Node-RED* エディタに戻り、画面右上部のメニューアイコンをクリックし、`パレットの管理`をクリックします。
+画面左側にノードをインストールするためのダイアログが表示されます。この画面にはインストール済みのノードとインストール可能な外部ノードが表示されます。これを使ってIBM Cloud Functionsのノードをインストールします。
 
-Select the `Install` tab and type in `node-red-node-openwhisk`.  
-Click the `install` button.
+パレットの`ノードを追加`タブを選択し、`node-red-node-openwhisk`と入力します。
+`ノードを追加`ボタンをクリックします。
 
-Now, once you return to the main palette menu, you should see the OpenWhisk nodes.
+メインパレットメニューに戻れば、IBM Cloud Functions(Openwhisk)ノードが追加されていることがわかるでしょう。
 
-### Invoking OpenWhisk actions from Node-RED
+### Node-REDからIBM Cloud Functionsアクションを呼び出し
 
-Now that we have the nodes installed, let's start by creating a flow which invokes an OpenWhisk action:
+ノードがインストールできたので、IBM Cloud Functionsアクションを呼び出すフローを作成しましょう。
 
-First, drag the OpenWhisk `action` node onto the flow panel.  
-Make sure you drag the `action` node (not the `trigger` node) that has both input and output ports. The input port receives messages that triggers the action and (optionally) passes in parameters for the invocation. The output port returns the activation response message.
+まず、Openwhisk `action`ノードをフローパネルに配置します。
+必ず(`trigger`ノードではなく)入力ポートと出力ポートを有している`action`ノードをドラッグしてください。入力ポートはアクションを引き起こすメッセージを受け取り、(必要に応じて)呼び出しのためのパラメータを引き渡します。出力ポートはアクティベーションのレスポンスメッセージを返します。
 
-Next, double-click the node icon to open the editor panel.  
-This editor panel allows us to define the name and namespace for the action to invoke when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.
+次にノードをダブルクリックし、編集パネルを開きます。
+この編集パネルではフローにメッセージが達した時にアクションが呼び出されるためのアクションの名前とnamespaceを定義できます。これらのパラメータはメッセージオブジェクトのプロパティとしてパラメータを引き渡すことによりランタイムで無効化できます。
 
-But, before we can invoke the action, we need to setup the OpenWhisk platform that *Node-RED* will talk to.
+しかし、アクションを呼び出す前に、 *Node-RED* が通信するためのIBM Cloud Functionsプラットホームを準備しましょう。
 
-Click on the `pencil` icon next to the service configuration drop-down:
+Service設定用ドロップダウンの横の`鉛筆`アイコンをクリックします。
 
-Fill in the form with the following details:
+フォームに以下の情報を埋めます。
 * `API URL`: `https://openwhisk.ng.bluemix.net/api/v1`
-* `Auth Key`: Once again the auth key you can obtain when clicking Use the CLI (https://console.ng.bluemix.net/openwhisk/cli)
+* `Auth Key`: 認証キーはUse the CLIをクリックすれば確認できます。 (https://console.ng.bluemix.net/openwhisk/cli)
 * `Name`: `OpenWhisk`
 
-Finally, click the `Add` button to add this service to *Node-RED*.
+`追加`をクリックして、このサービスを *Node-RED* に追加します。
 
-Now, we can fill in the `action name` and `namespace` values (which you can, once again, obtain when clicking Use the CLI) for the action we want to invoke.  
-Let's try it with the `hello` action you defined in the previous exercises.  
-Then, once again, add an `Inject` node and a `Debug` node to the flow grid (unless you still have them because you haven't deleted them earlier). Wire up both nodes to the OpenWhisk action node.  
-Then, deploy the flow using the `Deploy` button on the top-right hand corner.  
-Now, once you click the `Inject` node a few times, it should trigger our action and print the results of the invocation to the debug panel:
+これで呼び出したいアクションの`action名`と`namespace`の値を埋められます(Use the CLIをクリックで確認できます。)。
+これまでに作成した`hello`アクションを使いましょう。
+
+そうしたら、もう一度(先ほどのものを削除していたら)`Inject`ノードと`Debug`ノードをフローグリッドに追加します。その間にIBM Cloud Functionsノードを配置し接続します。
+それから画面右上部の`デプロイ`ボタンｗ押してフローをデプロイします。
+`Inject`ノードをいくらかクリックすれば、アクションを引き起こし、呼び出し結果がデバッグパネルに反映されるでしょう。
 
 <pre>
 {"message: "Hello, undefined from undefined"}
 </pre>
 
-Next, let's update the flow to include a `name` parameter in the incoming message generated by the `Inject` node. Therefore, open the `Inject` node's editor panel and change the payload type to *JSON*.
+次に`Inject`ノードで生成された入力メッセージに`name`パラメータを加えるためにフローをアップデートしましょう。`Inject`ノードの編集パネルを開きペイロードのタイプを *JSON* に変えましょう。
 
-Add the following field value:
+以下の値を追加します。
 
 <pre>
 {"name": "Bernie"}
 </pre>
 
-Now, save the `Inject` node configuration, deploy the flow and try injecting a few messages again. It should return the response message with the name `Bernie Sanders` included in the greeting:
+`Inject`ノードの設定を保存し、デプロイしたら、また何度かInjectメッセージを入力します。`Barnie Sanders`という名前を伴うメッセージが返ってくるでしょう。
 
 <pre>
 {"message: "Hello, Bernie from undefined"}
 </pre>
 
-Hopefully that worked fine, so add a parameter for `place` on your own before you move onto firing triggers using *Node-RED*.
+幸運にもうまく動いたようです。 *Node-RED* を使ったトリガーの起動に移る前にあなた自身の`place`の情報をパラメータに加えてみてはどうでしょう？
 
-## Invoking OpenWhisk Triggers from NodeRED
+## NodeREDからのFunctionsトリガーの呼び出し
 
-Drag the OpenWhisk `Trigger` node onto the flow panel.
+OpenWhisk`トリガー`ノードをフローパネルにドラッグします。
 
-The `Trigger` node has a single input port which receives messages that fires the trigger and (optionally) passes in parameters for the invocation.
+`トリガー`ノードは入力ポートのみを有し、トリガーを起動するメッセージを受け取って、(必要に応じて)呼び出しのためのパラメータを引き渡します。
 
-Now, double-click the node icon to open the editor panel.  
-This editor panel allows us to define the `name` and `namespace` for the trigger to fire when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.  
-Once again, we can fill in the `service`, `name` and `namespace` values for the trigger we want to invoke. Since we have already setup the service credentials for OpenWhisk in the previous task, we don't need to this again.
+さあ、ノードをダブルクリックし、編集パネルを開きましょう。
+この編集パネルでは、メッセージがフローに達した際にトリガーを起動するための`name`と`namespace`を定義できます。これらのパラメータは、パラメータをメッセージオブジェクトのプロパティとして引き渡すことでランタイムでは無効化されます。
 
-Let's try it with the `locationUpdate` trigger you defined in the previous exercises:
+繰り返しになりますが、ここでは呼び出したいトリガーの`service`、`name`、`namespace`を埋めることができます。すでにIBM Cloud Functionsのサービス資格情報を設定していますから、ここはもう一度設定する必要はありません。
 
-First, save your node configuration before returning to the flow editor screen.  
-Next, connect the `Inject` node on the screen to the `trigger` node you have just created.  
-Next, deploy the flow using the `Deploy` button on the top-right hand corner.  
-Now, test out this new invocation by clicking the `Inject` node a few times.
+これまでに作成した`locationUpadate`トリガーを使っていきましょう。
 
-If you check the invocation logs using the `wsk` command-line utility, do you see the activations appear?
+まず、フローエディタ画面に戻る前にノードの設定を保存します。
+画面上の`Inject`ノードと今作成した`トリガー`ノードを接続します。
+画面右上部の`デプロイ`ボタンをクリックしてデプロイします。
+`Inject`ノードを数回クリックし、この新しい呼び出しをテストします。
 
-### Creating New OpenWhisk Actions from Node-RED
+`wsk`コマンドラインユーティリティを用い、呼び出しログをチェックしてみてください。アクティベーションは現れたでしょうか？
 
-The OpenWhisk nodes also allow you to define new actions through the *Node-RED* editor panels. Using the code editor within the configuration panel, you can create and update the source for existing and new actions.
+### 新規IBM Cloud FunctionsアクションをNode-REDから作成
 
-Let's try updating the source code for our existing `hello` action:
+IBM Cloud Functionsのノードを使えば、 *Node-RED* の編集パネルを通して新たなアクションを定義できます。設定パネル内のコードエディタを用い、既存/新規のアクションのソースを作成/アップデートできます。
 
-First, double-click the OpenWhisk `action` node to reveal the editor panel.  
-The source code for the action should automatically be displayed.  
-Next, let's change the greeting string that the action returns.  
-Therefore, select the `Allow Edits` checkbox.  
-Modify the greeting string to be:
+既存の`hello`アクションを用い、ソースコードのアップデートをしましょう。
+
+まず、OpenWhisk `action`ノードをダブルクリックし、編集パネルを開きましょう。
+アクションのソースコードが自動的に映し出されます。
+次に、アクションが返すgreeting文字列を変えましょう。
+`Allow Edits`のチェックボックスを選択します。
+greeting文字列を以下のように編集します。
 
 <pre>
 "Salutations " + params.name + "!"
 </pre>
 
-Now, add a new parameter with `key` (`name`) and `value` (`Donald`).  
-Next, click `Done` to save your changes.  
-Before we update the flow, let's set the payload of the `Inject` node back to timestamp, so that the action uses the default parameter.  
-Finally, once you have done this, deploy the flow and check out the results in the console. This time it should return us the new message with the update greeting and default parameter.
+さあ、新たに`key`(`name`)と`value`(`Donald`)のパラメータを追加します。
+次に、`完了`をクリックして、変更を保存します。
+フローをアップデートする前に、`Inject`ノードのペイロードをタイムスタンプに変更し直して、アクションがデフォルトのパラメータを使えるようにしましょう。
+一度これを完了すれば、フローをデプロイしコンソール上の結果を持ち出せます。今回は、アップデートされたgreetingとデフォルトのパラメータを用いた新しいメッセージが返されることでしょう。
 
 # The coolest engines out there!
 
