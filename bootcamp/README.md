@@ -43,12 +43,12 @@
     + [データベースを作成する](#データベースを作成する)
   * [気象サービスの出力](#気象サービスの出力)
 - [より複雑なサーバレスアプリケーションを構成する](#より複雑なサーバレスアプリケーションを構成する)
-  * [それでは始めよう](#それでは始めよう)
+  * [はじめよう](#はじめよう)
   * [はじめてのComposition](#はじめてのcomposition)
   * [コンポジションのさらなる探求](#コンポジションのさらなる探求)
   * [ネスティングとデータ転送](#ネスティングとデータ転送)
   * [インラインコーディング](#インラインコーディング)
-- [IBM App Connect & Message Hub](#ibm-app-connect---message-hub)
+- [IBM App ConnectとMessage Hub](#ibm-app-connectとmessage-hub)
 - [Special fuel for your engine!](#special-fuel-for-your-engine-)
   * [Developing with VS Code](#developing-with-vs-code)
   * [Developing with the Serverless Framework](#developing-with-the-serverless-framework)
@@ -58,24 +58,24 @@
     + [Connecting API Endpoints](#connecting-api-endpoints)
     + [Working with Triggers and Rules](#working-with-triggers-and-rules)
     + [Packaging your weather services](#packaging-your-weather-services)
-- [Node-RED and OpenWhisk](#node-red-and-openwhisk)
-  * [Installing Node-RED](#installing-node-red)
-  * [Starting Node-RED](#starting-node-red)
-  * ["Hello World" with Node-RED](#-hello-world--with-node-red)
-    + [Add an Inject node](#add-an-inject-node)
-    + [Add a Debug node](#add-a-debug-node)
-    + [Wire the two together](#wire-the-two-together)
-    + [Deploy](#deploy)
-    + [Add a Function node](#add-a-function-node)
-  * [Adding Nodes to Node-RED](#adding-nodes-to-node-red)
-    + [Invoking OpenWhisk actions from Node-RED](#invoking-openwhisk-actions-from-node-red)
-  * [Invoking OpenWhisk Triggers from NodeRED](#invoking-openwhisk-triggers-from-nodered)
-    + [Creating New OpenWhisk Actions from Node-RED](#creating-new-openwhisk-actions-from-node-red)
-- [The coolest engines out there!](#the-coolest-engines-out-there-)
+- [Node-REDとIBM Cloud Functions](#node-redとibm-cloud-functions)
+  * [Node-REDのインストール](#node-redのインストール)
+  * [Node-REDをの開始](#node-redの開始)
+  * [Node-REDで"Hello World"](#node-redで-hello-world-)
+    + [Injectノードの追加](#injectノードの追加)
+    + [Debugノードの追加](#debugノードの追加)
+    + [ノードの連結](#ノードの連結)
+    + [デプロイ](#デプロイ)
+    + [Functionノードの追加](#functionノードの追加)
+  * [Node-REDにノードを追加](#node-redにノードを追加)
+    + [Node-REDからIBM Cloud Functionsアクションを呼び出し](#node-redからibm-cloud-functionsアクションを呼び出し)
+  * [Node-REDからのFunctionsトリガーの呼び出し](#node-redからのfunctionsトリガーの呼び出し)
+    + [新規IBM Cloud FunctionsアクションをNode-REDから作成](#新規ibm-cloud-functionsアクションをnode-redから作成)
+- [イケてるアプリは目前に!](#イケてるアプリは目前に)
   * [Vision App](#vision-app)
   * [Dark Vision](#dark-vision)
   * [Skylink](#skylink)
-- [Learning more](#learning-more)
+- [もっと知りたい！](#もっと知りたい)
 
 # 序文
 
@@ -1817,7 +1817,7 @@ Composerは独立した関数をより大きなアプリケーションに組み
 
 Composerには2つのパターンがあります。1つはプログラム的に構成状態を表すライブラリです。そのライブラリは現時点ではNode.jsで利用できます。2つ目は構成を実行するランタイムです。
 
-## それでは始めよう
+## はじめよう
 
 Composerを扱うには、新しいfunctions programming shell(fsh)が必要です。
 
@@ -2559,9 +2559,9 @@ Welcome to Node-RED
 
 パレットからDebugノードを1つワークスペースにドラッグしましょう。
 
-### 2つのノードを接続する
+### ノードの連結
 
-`Inject`ノードと`Debug`ノードをその出力ポートと入力ポートをドラッグでつなぐことで接続しましょう。
+`Inject`ノードと`Debug`ノードをその出力ポートと入力ポートをドラッグでつなぐことで連結しましょう。
 
 ### デプロイ
 
@@ -2662,7 +2662,7 @@ Service設定用ドロップダウンの横の`鉛筆`アイコンをクリッ�
 
 幸運にもうまく動いたようです。 *Node-RED* を使ったトリガーの起動に移る前にあなた自身の`place`の情報をパラメータに加えてみてはどうでしょう？
 
-## NodeREDからのFunctionsトリガーの呼び出し
+## Node-REDからのFunctionsトリガーの呼び出し
 
 OpenWhisk`トリガー`ノードをフローパネルにドラッグします。
 
@@ -2703,36 +2703,37 @@ greeting文字列を以下のように編集します。
 フローをアップデートする前に、`Inject`ノードのペイロードをタイムスタンプに変更し直して、アクションがデフォルトのパラメータを使えるようにしましょう。
 一度これを完了すれば、フローをデプロイしコンソール上の結果を持ち出せます。今回は、アップデートされたgreetingとデフォルトのパラメータを用いた新しいメッセージが返されることでしょう。
 
-# The coolest engines out there!
+# イケてるアプリは目前に!
 
-At this point in time we would like to show you four publicly available samples illustrating what you can build with OpenWhisk.
+ここからは4つの一般に利用可能なIBM Cloud Functionsでなにができるかを示したサンプルをご紹介します。
 
 ## Vision App
 
-Details about Vision App can be found here:  
+Vision Appの詳細はこちら。
 https://github.com/IBM-Bluemix/openwhisk-visionapp
 
-Vision App is a sample iOS application to automatically tag images and detect faces by using IBM visual recognition technologies. It allows you to take a photo or select an existing picture to let the application generate a list of tags and detect people, buildings, objects in the picture. It then allows you to share the results with your (social) network.
+Vision AppはiOSアプリのサンプルで、IBM Visual Recognitionの技術を用いて、自動的にイメージにタグ付けしたり顔認識をしたりします。
+これを使えば、撮影したばかりの写真や既存のイメージを使って、アプリケーション上で、タグのリストを作ったり、写真上の人や建造物や物体を特定したりすることができます。そしてその結果をSNSでシェアすることができます。
 
 ## Dark Vision
 
-Details about Dark Vision can be found here:  
+Dark Visionの詳細はこちら。
 https://github.com/IBM-Bluemix/openwhisk-darkvisionapp
 
-Dark Vision processes videos to discover dark data. By analyzing video frames with IBM Watson Visual Recognition, Dark Vision builds a summary with a set of tags and famous people or building detected in the video. Use this summary to enhance video search and categorization.
+Dark Visionは映像のダークデータを探し出します。IBM Watson Visual Recognitionを用いてビデオのフレームを分析し、タグや映像上の有名人や建造物を使って映像のサマリーを作ります。このサマリーによって、映像を見つけ出したりカテゴリー分けしたりすることが容易になります。
 
 ## Skylink
 
-Details about Skylink can be found here:  
+Skylinkの詳細はこちら。
 https://github.com/IBM-Bluemix/skylink
 
-Skylink is a sample application that lets you connect a DJI drone aircraft to the *IBM Cloud* with near realtime image analysis leveraging *IBM Cloudant, OpenWhisk, IBM Watson, and Alchemy Vision*.
+Skylinkを使えばDJIドローンを *IBM Cloud* に連携し、*IBM Cloudant, IBM Cloud Functions, IBM Watson, Alchemy Vision* などを用いて、リアルタイムに近いイメージ分析を行うことができます。
 
-# Learning more
+# もっと知りたい！
 
-Important resources:
+こちらのリソースからIBM Cloud Functionsの知識をより深めることができます。
 
-* IBM Cloud Functions: https://www.ibm.com/cloud-computing/bluemix/de/openwhisk
+* IBM Cloud Functions: https://www.ibm.com/cloud/functions
 * Apache OpenWhisk: http://openwhisk.org
 * OpenWhisk on Github: https://github.com/openwhisk/openwhisk/
 * OpenWhisk on Twitter: https://twitter.com/openwhisk
